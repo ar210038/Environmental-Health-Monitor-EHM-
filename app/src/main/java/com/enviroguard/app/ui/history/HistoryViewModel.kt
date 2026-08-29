@@ -139,7 +139,7 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
             1    -> reading.humidity
             2    -> reading.tvoc
             3    -> reading.eco2
-            4    -> reading.noiseDb
+            4    -> reading.noiseLevel
             5    -> HeatIndex.calculateCelsius(reading.temperature, reading.humidity) ?: Float.NaN
             else -> reading.temperature
         }

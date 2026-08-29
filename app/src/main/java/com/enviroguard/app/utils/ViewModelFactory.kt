@@ -17,7 +17,7 @@ class ViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) ->
-                HomeViewModel(repository, alertManager) as T
+                HomeViewModel(repository) as T
             modelClass.isAssignableFrom(ReportsViewModel::class.java) ->
                 ReportsViewModel(repository) as T
             modelClass.isAssignableFrom(HistoryViewModel::class.java) ->
