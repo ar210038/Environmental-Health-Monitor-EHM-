@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F7F6">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- TITLE -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect Device"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1A3A50"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pair your EnviroGuard device with this app"
+            android:textSize="12sp"
+            android:textColor="#9AA5A3"
+            android:layout_marginBottom="16dp" />
+
+        <!-- STATUS CARD -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardNoDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="28dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📡"
+                    android:textSize="44sp"
+                    android:layout_marginBottom="10dp" />
+
+                <TextView
+                    android:id="@+id/tvStatusTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No device connected"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A3A50"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvStatusSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Power on your EnviroGuard device to begin setup"
+                    android:textSize="13sp"
+                    android:textColor="#9AA5A3"
+                    android:gravity="center" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- SETUP STEPS CARD -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Setup Steps"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A3A50"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Step 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="14dp">
+
+                    <TextView
+                        android:id="@+id/step1Circle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:text="1"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/bg_step_active"
+                        android:gravity="center"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Power on the device"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A3A50" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="OLED screen will show Setup Mode"
+                            android:textSize="12sp"
+                            android:textColor="#9AA5A3" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Step 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="14dp">
+
+                    <TextView
+                        android:id="@+id/step2Circle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:text="2"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/bg_step_pending"
+                        android:gravity="center"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Connect to device WiFi"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A3A50" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="In phone WiFi settings, join EnviroGuard-Setup"
+                            android:textSize="12sp"
+                            android:textColor="#9AA5A3"
+                            android:layout_marginBottom="6dp" />
+
+                        <TextView
+                            android:id="@+id/btnOpenWifi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Open WiFi Settings →"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A6B8A"
+                            android:padding="4dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Step 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/step3Circle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:text="3"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="#9AA5A3"
+                        android:background="@drawable/bg_step_inactive"
+                        android:gravity="center"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Enter your home WiFi"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A3A50" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fill in the form below and tap Send to Device"
+                            android:textSize="12sp"
+                            android:textColor="#9AA5A3" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- WIFI CREDENTIALS FORM -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Home WiFi Details"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A3A50"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- SSID -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="WiFi Network Name (SSID)"
+                    android:textSize="12sp"
+                    android:textColor="#5B6664"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/etSsid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="14dp"
+                    android:hint="Home_Network_5G"
+                    android:textSize="14sp"
+                    android:textColor="#1A3A50"
+                    android:textColorHint="#C0C8C7"
+                    android:inputType="text"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Password -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="WiFi Password"
+                    android:textSize="12sp"
+                    android:textColor="#5B6664"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="14dp"
+                    android:hint="••••••••"
+                    android:inputType="textPassword"
+                    android:textSize="14sp"
+                    android:textColor="#1A3A50"
+                    android:textColorHint="#C0C8C7"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Device name -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name this device (optional)"
+                    android:textSize="12sp"
+                    android:textColor="#5B6664"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/etDeviceName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="14dp"
+                    android:hint="e.g. Bedroom, Office, Living Room"
+                    android:textSize="14sp"
+                    android:textColor="#1A3A50"
+                    android:textColorHint="#C0C8C7"
+                    android:inputType="text" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- SEND BUTTON -->
+        <TextView
+            android:id="@+id/btnSendToDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send to Device"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:background="@drawable/bg_button_primary"
+            android:padding="16dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- STATUS TEXT -->
+        <TextView
+            android:id="@+id/tvSendStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="12sp"
+            android:textColor="#9AA5A3"
+            android:textAlignment="center"
+            android:layout_marginBottom="20dp" />
+
+        <!-- PAIRED DEVICES LABEL -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Devices"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#1A3A50"
+            android:layout_marginBottom="10dp" />
+
+        <!-- PAIRED DEVICE CARD -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardPairedDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:text="📡"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_device_icon"
+                    android:layout_marginEnd="14dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvPairedDeviceName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="My Device"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#1A3A50" />
+
+                    <TextView
+                        android:id="@+id/tvPairedDeviceStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="● Online"
+                        android:textSize="12sp"
+                        android:textColor="#0F6E56" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ADD ANOTHER BUTTON -->
+        <TextView
+            android:id="@+id/btnAddAnother"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+ Add Another Device"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#1A6B8A"
+            android:textAlignment="center"
+            android:background="@drawable/bg_button_outline"
+            android:padding="14dp"
+            android:layout_marginBottom="80dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
