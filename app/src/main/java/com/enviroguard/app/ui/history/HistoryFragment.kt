@@ -67,10 +67,10 @@ class HistoryFragment : Fragment() {
         val chips = listOf(
             binding.chipTemperature,
             binding.chipHumidity,
+            binding.chipHeatIndex,
             binding.chipTvoc,
             binding.chipEco2,
-            binding.chipNoise,
-            binding.chipHeatIndex
+            binding.chipNoise
         )
 
         chips.forEachIndexed { index, chip ->

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#F4F7F6">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp" android:paddingBottom="96dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Health Guidance" android:textColor="#1A3A50" android:textSize="22sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvGuidanceStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Waiting for environmental data" android:textColor="#5B6664" android:textSize="12sp" android:layout_marginTop="4dp" />
+        <TextView android:id="@+id/tvGuidanceCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textColor="#1A6B8A" android:textSize="26sp" android:textStyle="bold" android:layout_marginTop="14dp" />
+        <TextView android:id="@+id/tvGuidanceConcerns" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No current assessment" android:textColor="#1A3A50" android:textSize="14sp" android:layout_marginBottom="16dp" />
+        <LinearLayout android:id="@+id/guidanceContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
+        <TextView android:id="@+id/btnAskAi" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Ask AI About My Environment" android:textColor="#1A6B8A" android:textStyle="bold" android:textAlignment="center" android:background="@drawable/bg_button_outline" android:padding="14dp" android:layout_marginTop="8dp" />
+        <TextView android:id="@+id/tvAiStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="" android:textColor="#5B6664" android:textSize="12sp" android:textAlignment="center" android:layout_marginTop="8dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="This app provides general environmental health guidance and is not a medical diagnosis or emergency service." android:textColor="#5B6664" android:textSize="11sp" android:layout_marginTop="16dp" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

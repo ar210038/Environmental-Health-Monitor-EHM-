@@ -21,7 +21,7 @@ import java.time.LocalDate
 
 class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
 
-    // 0=Temperature 1=Humidity 2=TVOC 3=eCO2 4=Noise 5=Heat Index
+    // 0=Temperature 1=Humidity 2=Heat Index 3=TVOC 4=eCO2 5=Estimated Noise
     private val _selectedSensor = MutableLiveData(0)
     val selectedSensor: LiveData<Int> = _selectedSensor
 
@@ -137,10 +137,10 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
             0    -> if (DeviceManager.useCelsius) reading.temperature
                     else TemperatureUtils.celsiusToFahrenheit(reading.temperature)
             1    -> reading.humidity
-            2    -> reading.tvoc
-            3    -> reading.eco2
-            4    -> reading.noiseLevel
-            5    -> HeatIndex.calculateCelsius(reading.temperature, reading.humidity) ?: Float.NaN
+            2    -> HeatIndex.calculateCelsius(reading.temperature, reading.humidity)
+            3    -> reading.tvoc
+            4    -> reading.eco2
+            5    -> reading.noiseLevel
             else -> reading.temperature
         }
     }
@@ -149,10 +149,10 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
         return when (_selectedSensor.value) {
             0    -> if (DeviceManager.useCelsius) "°C" else "°F"
             1    -> "%"
-            2    -> " ppb"
-            3    -> " ppm"
-            4    -> " dB"
-            5    -> "°C"
+            2    -> "°C"
+            3    -> " ppb"
+            4    -> " ppm"
+            5    -> " dB estimated"
             else -> ""
         }
     }
@@ -177,7 +177,7 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
     }
 
     private fun sensorName(): String = listOf(
-        "Temperature", "Humidity", "TVOC", "eCO₂", "Estimated Noise", "Heat Index"
+        "Temperature", "Humidity", "Heat Index", "TVOC", "eCO₂ equivalent", "Estimated Noise"
     )[_selectedSensor.value ?: 0]
 
     private fun getTimeRange(range: Int): TimeRange? = when (range) {

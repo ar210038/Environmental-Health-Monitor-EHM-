@@ -28,9 +28,18 @@ class SensorRepository(private val database: EnviroGuardDatabase) {
         ref.addValueEventListener(listener); awaitClose { ref.removeEventListener(listener) }
     }
     internal fun parseSensorSnapshot(snapshot: DataSnapshot): SensorReading? = runCatching {
-        SensorReading(snapshot.numberAsFloat("temperature"), snapshot.numberAsFloat("humidity"), snapshot.numberAsFloat("tvoc"), snapshot.numberAsFloat("eco2"), snapshot.numberAsFloat("noiseLevel", "noiseDb"), snapshot.child("timestamp").value?.toString()?.toLongOrNull() ?: snapshot.key?.toLongOrNull() ?: System.currentTimeMillis())
+        if (!snapshot.exists()) return null
+        val values = listOf(
+            snapshot.numberAsFloat("temperature"),
+            snapshot.numberAsFloat("humidity"),
+            snapshot.numberAsFloat("tvoc"),
+            snapshot.numberAsFloat("eco2"),
+            snapshot.numberAsFloat("noiseLevel", "noiseDb")
+        )
+        if (values.none { it.isFinite() }) return null
+        SensorReading(values[0], values[1], values[2], values[3], values[4], snapshot.child("timestamp").value?.toString()?.toLongOrNull() ?: snapshot.key?.toLongOrNull() ?: System.currentTimeMillis())
     }.getOrNull()
-    private fun DataSnapshot.numberAsFloat(primary: String, legacy: String? = null): Float = ((child(primary).value ?: legacy?.let { child(it).value }) as? Number)?.toFloat() ?: 0f
+    private fun DataSnapshot.numberAsFloat(primary: String, legacy: String? = null): Float = ((child(primary).value ?: legacy?.let { child(it).value }) as? Number)?.toFloat() ?: Float.NaN
     suspend fun saveReadingLocally(reading: SensorReading, deviceId: String, isDemo: Boolean = false) { if (!isDemo) database.sensorReadingDao().insert(createRawEntity(reading, deviceId)) }
     fun getReadingsBetween(start: Long, endExclusive: Long, deviceId: String? = null): Flow<List<SensorReadingEntity>> = if (deviceId.isNullOrBlank()) database.sensorReadingDao().getReadingsBetween(start, endExclusive) else database.sensorReadingDao().getReadingsBetweenForDevice(deviceId, start, endExclusive)
     fun observeDatasetCount(): Flow<Int> = database.sensorReadingDao().observeDatasetCount()

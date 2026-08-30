@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F4F7F6">
 
-    <!-- Fragment container — holds all 5 screens -->
+    <!-- Navigation host for the primary and secondary screens. -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/navHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

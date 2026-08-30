@@ -10,7 +10,7 @@ import java.time.LocalDate
 object DatasetExportManager {
     fun createShareIntent(context: Context, readings: List<SensorReadingEntity>): Intent {
         val exportDirectory = File(context.cacheDir, "dataset_exports").apply { mkdirs() }
-        val file = File(exportDirectory, "EnviroGuard_Dataset_${LocalDate.now()}.csv")
+        val file = File(exportDirectory, "EHM_Dataset_${LocalDate.now()}.csv")
         file.writeText(DatasetCsvExporter.generate(readings), Charsets.UTF_8)
         val uri = FileProvider.getUriForFile(
             context,

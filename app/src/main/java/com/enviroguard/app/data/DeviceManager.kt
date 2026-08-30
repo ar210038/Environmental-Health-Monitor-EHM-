@@ -23,7 +23,7 @@ object DeviceManager {
         set(value) = prefs.edit().putString(KEY_DEVICE_ID, value).apply()
 
     var activeDeviceName: String
-        get() = prefs.getString(KEY_DEVICE_NAME, "My EnviroGuard") ?: "My EnviroGuard"
+        get() = prefs.getString(KEY_DEVICE_NAME, "EHM Device") ?: "EHM Device"
         set(value) = prefs.edit().putString(KEY_DEVICE_NAME, value).apply()
 
     var isDeviceConnected: Boolean

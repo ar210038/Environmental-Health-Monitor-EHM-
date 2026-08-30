@@ -17,15 +17,16 @@ object EnvironmentalConditionEngine {
         return EnvironmentalAssessment(heatIndex, thermal, tvoc, eco2, air, noise, overall, concerns,
             EnvironmentalGuidanceCatalog.forAssessment(thermal, air, noise))
     }
-    fun classifyThermal(value: Float) = when { value < 26.7f -> EnvironmentalCondition.GOOD; value < 32.2f -> EnvironmentalCondition.MODERATE; value < 39.4f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
-    fun classifyTvoc(value: Float) = when { value <= 222f -> EnvironmentalCondition.GOOD; value <= 667f -> EnvironmentalCondition.MODERATE; value <= 2222f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
-    fun classifyEco2(value: Float) = when { value < 1000f -> EnvironmentalCondition.GOOD; value <= 2000f -> EnvironmentalCondition.MODERATE; else -> EnvironmentalCondition.POOR }
-    fun classifyNoise(value: Float) = when { value < 80f -> EnvironmentalCondition.GOOD; value < 85f -> EnvironmentalCondition.MODERATE; value < 95f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
+    fun classifyThermal(value: Float) = when { !value.isFinite() || value < 26.7f -> EnvironmentalCondition.GOOD; value < 32.2f -> EnvironmentalCondition.MODERATE; value < 39.4f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
+    fun classifyTvoc(value: Float) = when { !value.isFinite() || value <= 222f -> EnvironmentalCondition.GOOD; value <= 667f -> EnvironmentalCondition.MODERATE; value <= 2222f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
+    fun classifyEco2(value: Float) = when { !value.isFinite() || value < 1000f -> EnvironmentalCondition.GOOD; value <= 2000f -> EnvironmentalCondition.MODERATE; else -> EnvironmentalCondition.POOR }
+    fun classifyNoise(value: Float) = when { !value.isFinite() || value < 80f -> EnvironmentalCondition.GOOD; value < 85f -> EnvironmentalCondition.MODERATE; value < 95f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
 }
 
 object HeatIndex {
     /** U.S. National Weather Service heat-index procedure; output is Celsius. */
     fun calculateCelsius(temperatureC: Float, humidity: Float): Float {
+        if (!temperatureC.isFinite() || !humidity.isFinite()) return Float.NaN
         val t = temperatureC * 9f / 5f + 32f
         val rh = humidity.coerceIn(0f, 100f)
         val simple = 0.5f * (t + 61f + (t - 68f) * 1.2f + rh * .094f)

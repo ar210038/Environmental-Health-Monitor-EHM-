@@ -11,6 +11,7 @@ import com.enviroguard.app.data.DeviceManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.enviroguard.app.databinding.ActivityMainBinding
+import android.view.View
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
 
         // Connect bottom nav to navigation controller
         binding.bottomNav.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNav.visibility = if (destination.id == R.id.settingsFragment || destination.id == R.id.connectFragment) View.GONE else View.VISIBLE
+        }
         requestNotificationPermissionIfAppropriate()
     }
 
