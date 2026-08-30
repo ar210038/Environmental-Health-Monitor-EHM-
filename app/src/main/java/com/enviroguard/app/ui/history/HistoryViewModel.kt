@@ -10,14 +10,11 @@ import com.enviroguard.app.data.DeviceManager
 import com.enviroguard.app.utils.DateRangeUtils
 import com.enviroguard.app.utils.TemperatureUtils
 import com.enviroguard.app.utils.HeatIndex
-import com.enviroguard.app.utils.TimeRange
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.time.LocalDate
 
 class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
 
@@ -25,7 +22,7 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
     private val _selectedSensor = MutableLiveData(0)
     val selectedSensor: LiveData<Int> = _selectedSensor
 
-    // 0=Today 1=7Days 2=30Days 3=Custom
+    // 0=Hour 1=Day 2=Week
     private val _selectedRange = MutableLiveData(0)
     val selectedRange: LiveData<Int> = _selectedRange
 
@@ -41,7 +38,7 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
     private val _maxValue = MutableLiveData("--")
     val maxValue: LiveData<String> = _maxValue
 
-    private val _chartTitle = MutableLiveData("Temperature — Today")
+    private val _chartTitle = MutableLiveData("Temperature — Hour")
     val chartTitle: LiveData<String> = _chartTitle
 
     private val _isEmpty = MutableLiveData(false)
@@ -49,7 +46,6 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
 
     // Job cancellation — prevents multiple simultaneous collectors
     private var dataJob: Job? = null
-    private var customRange: TimeRange? = null
 
     init { loadData() }
 
@@ -65,23 +61,18 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
         loadData()
     }
 
-    fun selectCustomRange(startDate: LocalDate, endDateInclusive: LocalDate) {
-        customRange = DateRangeUtils.dates(startDate, endDateInclusive)
-        _selectedRange.value = 3
-        _chartTitle.value = "${sensorName()} — ${startDate} to ${endDateInclusive}"
-        loadData()
-    }
-
     fun refreshTemperatureUnit() {
         if (_selectedSensor.value == 0) loadData()
     }
+
+    fun refreshForActiveDevice() = loadData()
 
     private fun loadData() {
         // Cancel previous job before starting new one
         dataJob?.cancel()
 
         dataJob = viewModelScope.launch {
-            val range = getTimeRange(_selectedRange.value ?: 0) ?: return@launch
+            val range = getTimeRange(_selectedRange.value ?: 0)
             repository.getReadingsBetween(
                 range.startInclusive,
                 range.endExclusive,
@@ -157,20 +148,9 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
         }
     }
 
-    fun getChartColor(): String {
-        return when (_selectedSensor.value) {
-            0    -> "#0F6E56"
-            1    -> "#BA7517"
-            2    -> "#993C1D"
-            3    -> "#993C1D"
-            4    -> "#1A6B8A"
-            else -> "#1A6B8A"
-        }
-    }
-
     private fun updateChartTitle() {
         val rangeName = listOf(
-            "Today", "Last 7 Days", "Last 30 Days", "Custom"
+            "Hour", "Day", "Week"
         )[_selectedRange.value ?: 0]
 
         _chartTitle.value = "${sensorName()} — $rangeName"
@@ -180,18 +160,16 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
         "Temperature", "Humidity", "Heat Index", "TVOC", "eCO₂ equivalent", "Estimated Noise"
     )[_selectedSensor.value ?: 0]
 
-    private fun getTimeRange(range: Int): TimeRange? = when (range) {
-        0 -> DateRangeUtils.today()
-        1 -> DateRangeUtils.last7Days()
-        2 -> DateRangeUtils.last30Days()
-        else -> customRange
+    private fun getTimeRange(range: Int) = when (range) {
+        0 -> DateRangeUtils.lastHour()
+        1 -> DateRangeUtils.today()
+        else -> DateRangeUtils.last7Days()
     }
 
     // ── X AXIS LABEL FORMATTER ───────────────────────────────
     fun getXAxisLabel(timestamp: Long, range: Int): String {
         val format = when (range) {
-            0    -> SimpleDateFormat("HH:mm", Locale.getDefault())
-            1    -> SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
+            0, 1 -> SimpleDateFormat("HH:mm", Locale.getDefault())
             else -> SimpleDateFormat("MM/dd", Locale.getDefault())
         }
         return format.format(Date(timestamp))

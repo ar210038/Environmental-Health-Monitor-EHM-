@@ -10,10 +10,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.catch
 
 class HomeViewModel(private val repository: SensorRepository) : ViewModel() {
-    private val _sensorReading = MutableLiveData<SensorReading>()
-    val sensorReading: LiveData<SensorReading> = _sensorReading
-    private val _assessment = MutableLiveData<EnvironmentalAssessment>()
-    val assessment: LiveData<EnvironmentalAssessment> = _assessment
+    private val _sensorReading = MutableLiveData<SensorReading?>()
+    val sensorReading: LiveData<SensorReading?> = _sensorReading
+    private val _assessment = MutableLiveData<EnvironmentalAssessment?>()
+    val assessment: LiveData<EnvironmentalAssessment?> = _assessment
     private val _status = MutableLiveData("No Device")
     val status: LiveData<String> = _status
     private var listener: Job? = null

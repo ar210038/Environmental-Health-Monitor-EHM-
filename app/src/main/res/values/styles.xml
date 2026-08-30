@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.EHM.PageTitle" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/ehm_on_surface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.EHM.SectionTitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/ehm_on_surface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.EHM.CardTitle" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/ehm_on_surface</item>
+    </style>
+    <style name="TextAppearance.EHM.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/ehm_on_surface</item>
+    </style>
+    <style name="TextAppearance.EHM.Support" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/ehm_on_surface_variant</item>
+    </style>
+    <style name="Widget.EHM.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">@dimen/card_radius</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/ehm_surface</item>
+        <item name="strokeColor">@color/ehm_outline</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+    <style name="Widget.EHM.Card.Tonal" parent="Widget.EHM.Card">
+        <item name="cardBackgroundColor">@color/ehm_surface_tonal</item>
+    </style>
+    <style name="Widget.EHM.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">16dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+    <style name="Widget.EHM.Button.Filled" parent="Widget.Material3.Button">
+        <item name="cornerRadius">16dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+</resources>

@@ -1,7 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.EnviroGuard" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/ehm_primary</item>
+        <item name="colorPrimaryContainer">@color/ehm_primary_container</item>
+        <item name="colorSurface">@color/ehm_surface</item>
+        <item name="colorOnSurface">@color/ehm_on_surface</item>
+        <item name="android:colorBackground">@color/ehm_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/ehm_background</item>
+        <item name="android:navigationBarColor">@color/ehm_surface</item>
     </style>
 </resources>

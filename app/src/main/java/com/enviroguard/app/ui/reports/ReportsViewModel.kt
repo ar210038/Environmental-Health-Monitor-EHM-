@@ -61,8 +61,8 @@ class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
         val leaders = durations.filterValues { it == max && max > 0 }.keys
         _dominantContributor.value = when {
             leaders.isEmpty() -> "No dominant environmental concern detected for this period."
-            leaders.size == 1 -> "${leaders.first().displayName}\n${leaders.first().displayName} conditions accounted for the greatest duration of unfavorable measured conditions in this period."
-            else -> "${leaders.joinToString(" and ") { it.displayName }}\nThese dimensions were tied for the greatest duration of unfavorable measured conditions in this period."
+            leaders.size == 1 -> "${leaders.first().displayName} • ${formatDuration(max)}\n${leaders.first().displayName} conditions accounted for the greatest duration of unfavorable measured conditions in this period."
+            else -> "${leaders.joinToString(" and ") { it.displayName }} • ${formatDuration(max)}\nThese dimensions were tied for the greatest duration of unfavorable measured conditions in this period."
         }
         _historicalPattern.value = hourlyPattern(readings, assessments)
     }

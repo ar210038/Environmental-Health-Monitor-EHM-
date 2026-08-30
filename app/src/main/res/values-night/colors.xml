@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ehm_primary">#79D8BE</color>
+    <color name="ehm_on_primary">#00382D</color>
+    <color name="ehm_primary_container">#145044</color>
+    <color name="ehm_on_primary_container">#9CF3D9</color>
+    <color name="ehm_secondary">#B5CCC3</color>
+    <color name="ehm_background">#101512</color>
+    <color name="ehm_surface">#171C19</color>
+    <color name="ehm_surface_tonal">#202824</color>
+    <color name="ehm_surface_variant">#3E4944</color>
+    <color name="ehm_on_surface">#E0E7E2</color>
+    <color name="ehm_on_surface_variant">#BEC9C3</color>
+    <color name="ehm_outline">#89948E</color>
+    <color name="ehm_good">#82D5A8</color>
+    <color name="ehm_good_container">#174D34</color>
+    <color name="ehm_moderate">#F3C65B</color>
+    <color name="ehm_moderate_container">#554500</color>
+    <color name="ehm_poor">#FFB596</color>
+    <color name="ehm_poor_container">#6D2C0E</color>
+    <color name="ehm_critical">#FFB4AB</color>
+    <color name="ehm_critical_container">#690005</color>
+    <color name="ehm_error">#FFB4AB</color>
+</resources>

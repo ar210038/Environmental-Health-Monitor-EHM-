@@ -8,6 +8,9 @@ import java.time.ZoneOffset
 data class TimeRange(val startInclusive: Long, val endExclusive: Long)
 
 object DateRangeUtils {
+    fun lastHour(now: Long = System.currentTimeMillis()): TimeRange =
+        TimeRange((now - 60 * 60 * 1_000L).coerceAtLeast(0L), now + 1L)
+
     fun today(zoneId: ZoneId = ZoneId.systemDefault()): TimeRange =
         calendarDays(1, LocalDate.now(zoneId), zoneId)
 

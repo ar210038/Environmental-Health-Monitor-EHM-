@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F7F6">
+    android:background="@color/ehm_background">
 
     <!-- Navigation host for the primary and secondary screens. -->
     <androidx.fragment.app.FragmentContainerView
@@ -22,11 +22,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#FFFFFF"
+        android:minHeight="80dp"
+        android:background="@color/ehm_surface"
         app:menu="@menu/bottom_nav_menu"
         app:itemIconTint="@drawable/nav_item_color"
         app:itemTextColor="@drawable/nav_item_color"
+        app:itemRippleColor="@color/ehm_primary_container"
         app:labelVisibilityMode="labeled"
-        app:elevation="8dp" />
+        app:elevation="0dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

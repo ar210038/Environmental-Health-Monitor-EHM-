@@ -11,13 +11,15 @@ class SettingsViewModel(context: Context, private val repository: SensorReposito
     val demoMode=MutableLiveData(DeviceManager.isDemoMode)
     val useCelsius=MutableLiveData(DeviceManager.useCelsius)
     val collectedSamples=MutableLiveData(0)
-    val deviceSummary=MutableLiveData(deviceSummary())
+    val activeDevice=MutableLiveData(DeviceManager.getActiveDevice())
+    val savedDevices=MutableLiveData(DeviceManager.getSavedDevices())
     init { viewModelScope.launch { repository.observeDatasetCount().collect { collectedSamples.value=it } } }
     fun setNotifications(value:Boolean){DeviceManager.notificationsEnabled=value;notificationsEnabled.value=value}
     fun setDemoMode(value:Boolean){DeviceManager.isDemoMode=value;demoMode.value=value}
     fun setUseCelsius(value:Boolean){DeviceManager.useCelsius=value;useCelsius.value=value}
-    fun refreshDevice() { deviceSummary.value = deviceSummary() }
+    fun refreshDevice() { activeDevice.value = DeviceManager.getActiveDevice(); savedDevices.value = DeviceManager.getSavedDevices() }
+    fun selectDevice(deviceId: String) { DeviceManager.setActiveDevice(deviceId); refreshDevice() }
+    fun removeDevice(deviceId: String) { DeviceManager.removeDevice(deviceId); refreshDevice() }
     fun forgetDevice() { DeviceManager.clearDevice(); refreshDevice() }
-    private fun deviceSummary() = DeviceManager.activeDeviceId?.let { "${DeviceManager.activeDeviceName}\nDevice ID: $it" } ?: "No device configured"
     suspend fun getDatasetReadings()=repository.getDatasetReadings()
 }

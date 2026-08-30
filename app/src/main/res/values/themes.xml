@@ -1,8 +1,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.EnviroGuard" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/ehm_primary</item>
+        <item name="colorOnPrimary">@color/ehm_on_primary</item>
+        <item name="colorPrimaryContainer">@color/ehm_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/ehm_on_primary_container</item>
+        <item name="colorSecondary">@color/ehm_secondary</item>
+        <item name="colorSurface">@color/ehm_surface</item>
+        <item name="colorSurfaceVariant">@color/ehm_surface_variant</item>
+        <item name="colorOnSurface">@color/ehm_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/ehm_on_surface_variant</item>
+        <item name="colorOutline">@color/ehm_outline</item>
+        <item name="colorError">@color/ehm_error</item>
+        <item name="android:colorBackground">@color/ehm_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/ehm_background</item>
+        <item name="android:navigationBarColor">@color/ehm_surface</item>
+        <item name="android:fontFamily">sans</item>
     </style>
 
     <style name="Theme.EnviroGuard" parent="Base.Theme.EnviroGuard" />

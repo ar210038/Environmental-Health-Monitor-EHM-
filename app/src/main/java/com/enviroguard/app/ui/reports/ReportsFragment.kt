@@ -15,6 +15,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import androidx.core.content.ContextCompat
 
 class ReportsFragment : Fragment() {
     private var _binding: FragmentReportsBinding? = null
@@ -23,9 +24,24 @@ class ReportsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View { _binding = FragmentReportsBinding.inflate(inflater, container, false); return binding.root }
     override fun onViewCreated(view: View, state: Bundle?) {
         viewModel = ViewModelProvider(this, ViewModelFactory((requireActivity().application as EnviroGuardApp).repository))[ReportsViewModel::class.java]
-        binding.conditionChart.apply { description.isEnabled = false; xAxis.position = XAxis.XAxisPosition.BOTTOM; axisRight.isEnabled = false; axisLeft.axisMinimum = 0f; axisLeft.axisMaximum = 3f; legend.isEnabled = false }
+        binding.conditionChart.apply {
+            description.isEnabled = false
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.ehm_on_surface_variant)
+            xAxis.setDrawGridLines(false)
+            axisRight.isEnabled = false
+            axisLeft.axisMinimum = 0f
+            axisLeft.axisMaximum = 3f
+            axisLeft.granularity = 1f
+            axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.ehm_on_surface_variant)
+            axisLeft.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+                override fun getFormattedValue(value: Float) = listOf("GOOD", "MODERATE", "POOR", "CRITICAL").getOrElse(value.toInt()) { "" }
+            }
+            legend.isEnabled = false
+        }
         val tabs = listOf(binding.tabDaily, binding.tabWeekly, binding.tabMonthly)
-        tabs.forEachIndexed { index, tab -> tab.setOnClickListener { tabs.forEach { it.setBackgroundResource(0); it.setTextColor(Color.parseColor("#9AA5A3")) }; tab.setBackgroundResource(R.drawable.bg_tab_active); tab.setTextColor(Color.parseColor("#1A6B8A")); viewModel.selectPeriod(index) } }
+        val periodTitles = listOf("Today’s environment", "Last 7 days", "Last 30 days")
+        tabs.forEachIndexed { index, tab -> tab.setOnClickListener { tabs.forEach { it.setBackgroundResource(0); it.setTextColor(ContextCompat.getColor(requireContext(), R.color.ehm_on_surface_variant)) }; tab.setBackgroundResource(R.drawable.bg_tab_active); tab.setTextColor(ContextCompat.getColor(requireContext(), R.color.ehm_primary)); binding.tvEnvironmentPeriodTitle.text = periodTitles[index]; viewModel.selectPeriod(index) } }
         viewModel.thermalDuration.observe(viewLifecycleOwner) { binding.tvThermalDuration.text = it }
         viewModel.airDuration.observe(viewLifecycleOwner) { binding.tvAirDuration.text = it }
         viewModel.noiseDuration.observe(viewLifecycleOwner) { binding.tvNoiseDuration.text = it }
@@ -36,10 +52,11 @@ class ReportsFragment : Fragment() {
         viewModel.chartPoints.observe(viewLifecycleOwner) { points ->
             if (points.isEmpty()) { binding.conditionChart.clear(); return@observe }
             val base = points.first().first
-            val set = LineDataSet(points.map { Entry((it.first - base) / 1000f, it.second) }, "Environmental condition").apply { color = Color.parseColor("#1A6B8A"); lineWidth = 2f; setDrawCircles(false); setDrawValues(false) }
+            val set = LineDataSet(points.map { Entry((it.first - base) / 1000f, it.second) }, "Environmental condition").apply { color = ContextCompat.getColor(requireContext(), R.color.ehm_primary); lineWidth = 2.5f; setDrawCircles(false); setDrawValues(false); mode = LineDataSet.Mode.STEPPED }
             binding.conditionChart.xAxis.valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() { override fun getFormattedValue(value: Float) = viewModel.getXAxisLabel(base + (value * 1000).toLong(), viewModel.selectedPeriod.value ?: 0) }
             binding.conditionChart.data = LineData(set); binding.conditionChart.invalidate()
         }
     }
+    override fun onResume() { super.onResume(); if (::viewModel.isInitialized) viewModel.selectPeriod(viewModel.selectedPeriod.value ?: 0) }
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
 }
