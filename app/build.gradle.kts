@@ -75,6 +75,10 @@ dependencies {
     // Charts
     implementation(libs.mpandroidchart)
 
+    // Official Espressif SoftAP provisioning protocol
+    implementation(libs.esp.idf.provisioning)
+    implementation(libs.eventbus)
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.play.services)

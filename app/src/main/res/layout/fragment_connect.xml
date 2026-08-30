@@ -2,9 +2,10 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ehm_background">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,26 +17,52 @@
         android:paddingBottom="@dimen/space_32">
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
-            <ImageButton android:id="@+id/btnBackToSettings" android:layout_width="48dp" android:layout_height="48dp" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="Back to Settings" android:padding="12dp" android:src="@drawable/ic_arrow_back" />
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_8" android:layout_weight="1" android:text="Device Setup" android:textAppearance="@style/TextAppearance.EHM.PageTitle" />
+            <ImageButton android:id="@+id/btnBackToSettings" android:layout_width="48dp" android:layout_height="48dp" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@string/setup_cancel_description" android:padding="12dp" android:src="@drawable/ic_arrow_back" />
+            <TextView android:id="@+id/tvSetupTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_8" android:layout_weight="1" android:text="@string/setup_add_title" android:textAppearance="@style/TextAppearance.EHM.PageTitle" />
         </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal" android:orientation="vertical" android:padding="@dimen/space_24">
-                <ImageView android:layout_width="56dp" android:layout_height="56dp" android:contentDescription="Monitoring device setup" android:src="@drawable/ic_device" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="Provisioning not connected" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="Real ESP32 SoftAP Wi-Fi provisioning will be implemented in the next phase." android:textAppearance="@style/TextAppearance.EHM.Body" />
+        <TextView android:id="@+id/tvSetupIntroduction" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:text="@string/setup_add_intro" android:textAppearance="@style/TextAppearance.EHM.Body" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:background="@drawable/bg_tab_track" android:orientation="horizontal" android:padding="@dimen/space_4">
+            <TextView android:id="@+id/tvStepFind" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:background="@drawable/bg_tab_active" android:gravity="center" android:text="@string/setup_step_find" android:textColor="@color/ehm_primary" android:textSize="13sp" android:textStyle="bold" />
+            <TextView android:id="@+id/tvStepWifi" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:gravity="center" android:text="@string/setup_step_wifi" android:textColor="@color/ehm_on_surface_variant" android:textSize="13sp" />
+            <TextView android:id="@+id/tvStepConnect" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:gravity="center" android:text="@string/setup_step_connect" android:textColor="@color/ehm_on_surface_variant" android:textSize="13sp" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal" android:orientation="vertical" android:padding="@dimen/space_20">
+                <ImageView android:layout_width="48dp" android:layout_height="48dp" android:contentDescription="@string/setup_status_description" android:src="@drawable/ic_device" />
+                <com.google.android.material.progressindicator.CircularProgressIndicator android:id="@+id/progressProvisioning" android:layout_width="36dp" android:layout_height="36dp" android:layout_marginTop="@dimen/space_12" android:indeterminate="true" android:visibility="gone" app:indicatorColor="@color/ehm_primary" tools:visibility="visible" />
+                <TextView android:id="@+id/tvProvisioningStatusTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:gravity="center" android:text="@string/setup_find_title" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+                <TextView android:id="@+id/tvProvisioningStatusDetail" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="@string/setup_find_detail" android:textAppearance="@style/TextAppearance.EHM.Body" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="What this screen does now" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
-        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
+        <LinearLayout android:id="@+id/deviceSection" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:orientation="vertical" android:visibility="gone" tools:visibility="visible">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_devices_title" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_4" android:text="@string/setup_devices_help" android:textAppearance="@style/TextAppearance.EHM.Support" />
+            <LinearLayout android:id="@+id/deviceContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:orientation="vertical" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/networkSection" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:orientation="vertical" android:visibility="gone" tools:visibility="visible">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_choose_wifi_title" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_4" android:text="@string/setup_choose_wifi_help" android:textAppearance="@style/TextAppearance.EHM.Support" />
+            <LinearLayout android:id="@+id/networkContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:orientation="vertical" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView android:id="@+id/credentialsCard" style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:visibility="gone" tools:visibility="visible">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="• Opens your phone’s Wi-Fi settings when requested\n\n• Does not collect or store a Wi-Fi password\n\n• Does not create a fake device or connection state" android:textAppearance="@style/TextAppearance.EHM.Body" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnOpenWifiSettings" style="@style/Widget.EHM.Button.Outlined" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:text="Open phone Wi-Fi settings" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_connect_title" android:textAppearance="@style/TextAppearance.EHM.CardTitle" />
+                <TextView android:id="@+id/tvSelectedNetwork" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:textAppearance="@style/TextAppearance.EHM.Body" tools:text="Home Wi-Fi" />
+                <com.google.android.material.textfield.TextInputLayout android:id="@+id/inputWifiPassword" style="@style/Widget.Material3.TextInputLayout.OutlinedBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:hint="@string/setup_wifi_password" app:endIconMode="password_toggle">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/editWifiPassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:imeOptions="actionDone" android:importantForAutofill="no" android:inputType="textPassword" android:saveEnabled="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.button.MaterialButton android:id="@+id/btnProvisionCredentials" style="@style/Widget.EHM.Button.Filled" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="@string/setup_connect_button" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="No device will be added until the real provisioning protocol returns a verified device identifier." android:textAppearance="@style/TextAppearance.EHM.Support" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnPrimaryAction" style="@style/Widget.EHM.Button.Filled" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:text="@string/setup_find_button" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnSecondaryAction" style="@style/Widget.EHM.Button.Outlined" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="@string/setup_cancel_button" />
+        <TextView android:id="@+id/tvSecurityNote" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="@string/setup_security_note" android:textAppearance="@style/TextAppearance.EHM.Support" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

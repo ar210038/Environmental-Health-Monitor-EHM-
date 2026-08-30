@@ -32,6 +32,11 @@
     <fragment
         android:id="@+id/connectFragment"
         android:name="com.enviroguard.app.ui.connect.ConnectFragment"
-        android:label="Connect" />
+        android:label="Connect">
+        <argument
+            android:name="mode"
+            android:defaultValue="add"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

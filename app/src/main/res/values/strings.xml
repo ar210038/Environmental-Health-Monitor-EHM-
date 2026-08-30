@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">Environmental Health Monitor</string>
+    <string name="setup_cancel_description">Cancel device setup</string>
+    <string name="setup_add_title">Add Monitoring Device</string>
+    <string name="setup_reconfigure_title">Reconfigure Wi-Fi</string>
+    <string name="setup_add_intro">Power on your EHM device. If it has not been configured, it will create a temporary setup network.</string>
+    <string name="setup_reconfigure_intro">Put the monitoring device into Wi-Fi setup mode, then continue. A BOOT-button long press or failed saved connection will be supported by the firmware phase.</string>
+    <string name="setup_step_find">1  Find Device</string>
+    <string name="setup_step_wifi">2  Choose Wi-Fi</string>
+    <string name="setup_step_connect">3  Connect</string>
+    <string name="setup_status_description">Monitoring device setup status</string>
+    <string name="setup_find_title">Find Monitoring Device</string>
+    <string name="setup_find_detail">Only setup networks whose names match EHM_XXXXXX will be shown.</string>
+    <string name="setup_devices_title">Monitoring Devices</string>
+    <string name="setup_devices_help">Select the setup network created by your device.</string>
+    <string name="setup_choose_wifi_title">Choose Wi-Fi</string>
+    <string name="setup_choose_wifi_help">These networks were scanned by the monitoring device.</string>
+    <string name="setup_connect_title">Connect Monitoring Device</string>
+    <string name="setup_wifi_password">Wi-Fi password</string>
+    <string name="setup_connect_button">Connect device to Wi-Fi</string>
+    <string name="setup_find_button">Find Device</string>
+    <string name="setup_cancel_button">Cancel setup</string>
+    <string name="setup_security_note">Wi-Fi credentials are sent directly to the monitoring device through Espressif Security 1. The password is not saved by EHM.</string>
+    <string name="setup_select_device_title">Select Monitoring Device</string>
+    <string name="setup_one_device_found">One EHM setup device was found.</string>
+    <string name="setup_devices_found">%1$d EHM setup devices were found. Select the device you want to configure.</string>
+    <string name="setup_select_router">Select the router network for %1$s.</string>
+    <string name="setup_provisioned_title">Monitoring device connected</string>
+    <string name="setup_provisioned_detail">%1$s was provisioned successfully and is being added to this phone.</string>
+    <string name="setup_selected_network">Selected network: %1$s</string>
+    <string name="setup_password_not_required">Password (not required)</string>
+    <string name="setup_password_required">Enter the Wi-Fi password for %1$s.</string>
 </resources>

@@ -72,10 +72,7 @@ object DeviceManager {
 
     fun addOrUpdateDevice(device: SavedDevice) {
         if (device.deviceId.isBlank()) return
-        val devices = readSavedDevices().toMutableList()
-        val index = devices.indexOfFirst { it.deviceId == device.deviceId }
-        if (index >= 0) devices[index] = device else devices.add(device)
-        writeSavedDevices(devices)
+        writeSavedDevices(SavedDeviceCollection.upsert(readSavedDevices(), device))
         if (activeDeviceId == null) setActiveDevice(device.deviceId)
     }
 

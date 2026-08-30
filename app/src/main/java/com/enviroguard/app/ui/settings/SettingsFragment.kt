@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -57,8 +58,12 @@ class SettingsFragment : Fragment() {
         binding.switchDemoMode.setOnCheckedChangeListener { _, checked -> viewModel.setDemoMode(checked) }
         binding.btnCelsius.setOnClickListener { viewModel.setUseCelsius(true) }
         binding.btnFahrenheit.setOnClickListener { viewModel.setUseCelsius(false) }
-        binding.btnSetUpDevice.setOnClickListener { findNavController().navigate(R.id.connectFragment) }
-        binding.btnChangeWifi.setOnClickListener { findNavController().navigate(R.id.connectFragment) }
+        binding.btnSetUpDevice.setOnClickListener {
+            findNavController().navigate(R.id.connectFragment, bundleOf("mode" to "add"))
+        }
+        binding.btnChangeWifi.setOnClickListener {
+            findNavController().navigate(R.id.connectFragment, bundleOf("mode" to "reconfigure"))
+        }
         binding.btnManageDevices.setOnClickListener { showDeviceManager() }
         binding.btnForgetDevice.setOnClickListener { confirmForgetDevice() }
         binding.btnExportDataset.setOnClickListener {
@@ -108,8 +113,8 @@ class SettingsFragment : Fragment() {
     private fun confirmForgetDevice() {
         val device = viewModel.activeDevice.value ?: return
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Forget ${device.displayName}?")
-            .setMessage("This removes the device from this app. It does not delete sensor data from Firebase or Room.")
+            .setTitle("Remove this monitoring device from the app?")
+            .setMessage("This removes ${device.displayName} from this phone. It does not reset the ESP32's stored Wi-Fi configuration or delete Firebase/Room history.")
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Forget") { _, _ -> viewModel.forgetDevice() }
             .show()

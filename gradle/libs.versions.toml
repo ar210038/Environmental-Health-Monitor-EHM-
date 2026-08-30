@@ -18,6 +18,8 @@ firebaseBom = "33.9.0"
 onnxruntime = "1.20.0"
 mpAndroidChart = "v3.1.0"
 coroutines = "1.10.1"
+espProvisioning = "lib-2.4.4"
+eventBus = "3.3.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +45,8 @@ onnxruntime-android = { group = "com.microsoft.onnxruntime", name = "onnxruntime
 mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpAndroidChart" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutines" }
+esp-idf-provisioning = { group = "com.github.espressif", name = "esp-idf-provisioning-android", version.ref = "espProvisioning" }
+eventbus = { group = "org.greenrobot", name = "eventbus", version.ref = "eventBus" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
