@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.retryWhen
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SensorRepository(private val database: EnviroGuardDatabase) {
@@ -78,6 +79,12 @@ class SensorRepository(private val database: EnviroGuardDatabase) {
     fun getReadingsBetween(start: Long, endExclusive: Long, deviceId: String? = null): Flow<List<SensorReadingEntity>> = if (deviceId.isNullOrBlank()) database.sensorReadingDao().getReadingsBetween(start, endExclusive) else database.sensorReadingDao().getReadingsBetweenForDevice(deviceId, start, endExclusive)
     fun observeDatasetCount(): Flow<Int> = database.sensorReadingDao().observeDatasetCount()
     suspend fun getDatasetReadings(): List<SensorReadingEntity> = database.sensorReadingDao().getAllForDatasetExport()
+    fun observeLatestReadingForDevice(deviceId: String): Flow<SensorReading?> =
+        database.sensorReadingDao().observeLatestReadingForDevice(deviceId).map { entity ->
+            entity?.let {
+                SensorReading(it.temperature, it.humidity, it.tvoc, it.eco2, it.noiseLevel, it.timestamp)
+            }
+        }
     fun getDemoReading() = SensorReading(Constants.DEMO_TEMP, Constants.DEMO_HUMIDITY, Constants.DEMO_TVOC, Constants.DEMO_ECO2, Constants.DEMO_NOISE)
     companion object {
         private const val HISTORY_RETRY_DELAY_MS = 15_000L

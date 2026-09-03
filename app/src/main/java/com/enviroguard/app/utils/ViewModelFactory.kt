@@ -8,11 +8,13 @@ import com.enviroguard.app.ui.reports.ReportsViewModel
 import com.enviroguard.app.ui.history.HistoryViewModel
 import com.enviroguard.app.alerts.EnvironmentalAlertManager
 import com.enviroguard.app.ai.GeminiExplanationService
+import com.enviroguard.app.forecast.EnvironmentalForecastService
 
 class ViewModelFactory(
     private val repository: SensorRepository,
     private val alertManager: EnvironmentalAlertManager? = null,
-    private val geminiExplanationService: GeminiExplanationService? = null
+    private val geminiExplanationService: GeminiExplanationService? = null,
+    private val forecastService: EnvironmentalForecastService? = null
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -21,7 +23,7 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(HomeViewModel::class.java) ->
                 HomeViewModel(repository, alertManager, geminiExplanationService) as T
             modelClass.isAssignableFrom(ReportsViewModel::class.java) ->
-                ReportsViewModel(repository) as T
+                ReportsViewModel(repository, forecastService) as T
             modelClass.isAssignableFrom(HistoryViewModel::class.java) ->
                 HistoryViewModel(repository) as T
             else -> throw IllegalArgumentException("Unknown ViewModel: ${modelClass.name}")

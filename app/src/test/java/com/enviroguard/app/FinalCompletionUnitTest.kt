@@ -175,6 +175,7 @@ class FinalCompletionUnitTest {
         }
 
         override fun getLatestReading(): Flow<SensorReadingEntity?> = emptyFlow()
+        override fun observeLatestReadingForDevice(deviceId: String): Flow<SensorReadingEntity?> = emptyFlow()
         override fun getReadingsSince(startTime: Long): Flow<List<SensorReadingEntity>> = emptyFlow()
         override fun getReadingsBetween(start: Long, endExclusive: Long): Flow<List<SensorReadingEntity>> = emptyFlow()
         override fun getReadingsBetweenForDevice(deviceId: String, start: Long, endExclusive: Long): Flow<List<SensorReadingEntity>> = emptyFlow()

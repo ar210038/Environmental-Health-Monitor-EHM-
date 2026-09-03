@@ -16,6 +16,9 @@ interface SensorReadingDao {
     @Query("SELECT * FROM sensor_readings ORDER BY timestamp DESC LIMIT 1")
     fun getLatestReading(): Flow<SensorReadingEntity?>
 
+    @Query("SELECT * FROM sensor_readings WHERE deviceId = :deviceId ORDER BY timestamp DESC LIMIT 1")
+    fun observeLatestReadingForDevice(deviceId: String): Flow<SensorReadingEntity?>
+
     @Query("SELECT * FROM sensor_readings WHERE timestamp >= :startTime ORDER BY timestamp ASC")
     fun getReadingsSince(startTime: Long): Flow<List<SensorReadingEntity>>
 

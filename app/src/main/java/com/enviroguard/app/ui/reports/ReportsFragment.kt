@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import androidx.core.content.ContextCompat
+import com.enviroguard.app.forecast.ForecastPresentationFactory
 
 class ReportsFragment : Fragment() {
     private var _binding: FragmentReportsBinding? = null
@@ -23,7 +24,11 @@ class ReportsFragment : Fragment() {
     private lateinit var viewModel: ReportsViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View { _binding = FragmentReportsBinding.inflate(inflater, container, false); return binding.root }
     override fun onViewCreated(view: View, state: Bundle?) {
-        viewModel = ViewModelProvider(this, ViewModelFactory((requireActivity().application as EnviroGuardApp).repository))[ReportsViewModel::class.java]
+        val app = requireActivity().application as EnviroGuardApp
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(repository = app.repository, forecastService = app.forecastService)
+        )[ReportsViewModel::class.java]
         binding.conditionChart.apply {
             description.isEnabled = false
             xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -47,7 +52,12 @@ class ReportsFragment : Fragment() {
         viewModel.noiseDuration.observe(viewLifecycleOwner) { binding.tvNoiseDuration.text = it }
         viewModel.dominantContributor.observe(viewLifecycleOwner) { binding.tvDominantContributor.text = it }
         viewModel.historicalPattern.observe(viewLifecycleOwner) { binding.tvHistoricalPattern.text = it }
-        viewModel.forecastState.observe(viewLifecycleOwner) { binding.tvForecastState.text = it }
+        viewModel.forecastState.observe(viewLifecycleOwner) { state ->
+            val presentation = ForecastPresentationFactory.create(state)
+            binding.tvForecastTitle.text = presentation.title
+            binding.tvForecastState.text = presentation.detail
+            binding.forecastProgress.visibility = if (presentation.showProgress) View.VISIBLE else View.GONE
+        }
         viewModel.isEmpty.observe(viewLifecycleOwner) { empty -> binding.conditionChart.visibility = if (empty) View.GONE else View.VISIBLE; binding.tvTrendsEmpty.visibility = if (empty) View.VISIBLE else View.GONE }
         viewModel.chartPoints.observe(viewLifecycleOwner) { points ->
             if (points.isEmpty()) { binding.conditionChart.clear(); return@observe }

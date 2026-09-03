@@ -12,14 +12,20 @@ import com.enviroguard.app.model.EnvironmentalDimension
 import com.enviroguard.app.model.SensorReading
 import com.enviroguard.app.utils.DateRangeUtils
 import com.enviroguard.app.utils.EnvironmentalConditionEngine
+import com.enviroguard.app.forecast.EnvironmentalForecastService
+import com.enviroguard.app.forecast.ForecastPipelineState
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Calendar
 import java.util.Locale
 
-class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
+class ReportsViewModel(
+    private val repository: SensorRepository,
+    private val forecastService: EnvironmentalForecastService? = null
+) : ViewModel() {
     private val _selectedPeriod = MutableLiveData(0); val selectedPeriod: LiveData<Int> = _selectedPeriod
     private val _chartPoints = MutableLiveData<List<Pair<Long, Float>>>(emptyList()); val chartPoints: LiveData<List<Pair<Long, Float>>> = _chartPoints
     private val _thermalDuration = MutableLiveData("0 min"); val thermalDuration: LiveData<String> = _thermalDuration
@@ -27,9 +33,12 @@ class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
     private val _noiseDuration = MutableLiveData("0 min"); val noiseDuration: LiveData<String> = _noiseDuration
     private val _dominantContributor = MutableLiveData("Insufficient history"); val dominantContributor: LiveData<String> = _dominantContributor
     private val _historicalPattern = MutableLiveData("Not enough historical data yet."); val historicalPattern: LiveData<String> = _historicalPattern
-    private val _forecastState = MutableLiveData("Forecast not available yet. The forecasting model will use historical environmental data to estimate conditions approximately one hour ahead."); val forecastState: LiveData<String> = _forecastState
+    private val _forecastState = MutableLiveData<ForecastPipelineState>(
+        ForecastPipelineState.Unavailable("No current measurement is available for the test forecast.")
+    ); val forecastState: LiveData<ForecastPipelineState> = _forecastState
     private val _isEmpty = MutableLiveData(true); val isEmpty: LiveData<Boolean> = _isEmpty
     private var job: Job? = null
+    private var forecastJob: Job? = null
 
     init { selectPeriod(0) }
 
@@ -40,6 +49,38 @@ class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
             val range = when (period) { 0 -> DateRangeUtils.today(); 1 -> DateRangeUtils.last7Days(); else -> DateRangeUtils.last30Days() }
             DeviceManager.activeDeviceId?.let(repository::ensureHistorySynchronization)
             repository.getReadingsBetween(range.startInclusive, range.endExclusive, DeviceManager.activeDeviceId).collect(::render)
+        }
+        refreshForecast()
+    }
+
+    private fun refreshForecast() {
+        forecastJob?.cancel()
+        val service = forecastService
+        if (service == null) {
+            _forecastState.value = ForecastPipelineState.Unavailable("The local forecast component is unavailable.")
+            return
+        }
+        forecastJob = viewModelScope.launch {
+            if (DeviceManager.isDemoMode) {
+                service.forecast(repository.getDemoReading()).collect { _forecastState.value = it }
+                return@launch
+            }
+            val deviceId = DeviceManager.activeDeviceId
+            if (deviceId.isNullOrBlank()) {
+                _forecastState.value = ForecastPipelineState.Unavailable(
+                    "A current or timestamped measured reading is needed to run the test forecast."
+                )
+                return@launch
+            }
+            repository.observeLatestReadingForDevice(deviceId).collectLatest { reading ->
+                if (reading == null) {
+                    _forecastState.value = ForecastPipelineState.Unavailable(
+                        "Waiting for a timestamped measured reading to run the test forecast."
+                    )
+                } else {
+                    service.forecast(reading).collect { _forecastState.value = it }
+                }
+            }
         }
     }
 
