@@ -27,7 +27,7 @@
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/space_20">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CURRENT CONDITION" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
                 <TextView android:id="@+id/tvGuidanceCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="26sp" android:textStyle="bold" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="Main concern" android:textAppearance="@style/TextAppearance.EHM.Support" />
+                <TextView android:id="@+id/tvGuidanceConcernsLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="Main concern" android:textAppearance="@style/TextAppearance.EHM.Support" />
                 <TextView android:id="@+id/tvGuidanceConcerns" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="No current assessment" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -45,6 +45,44 @@
             app:icon="@drawable/ic_guidance" />
 
         <TextView android:id="@+id/tvAiStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="" android:textAppearance="@style/TextAppearance.EHM.Support" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/aiLoading"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/space_8"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAiExplanation"
+            style="@style/Widget.EHM.Card.Tonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_12"
+            android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_20">
+                <TextView
+                    android:id="@+id/tvAiExplanationLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ai_explanation_live_label"
+                    android:textAppearance="@style/TextAppearance.EHM.Support"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvAiExplanation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_8"
+                    android:textAppearance="@style/TextAppearance.EHM.Body" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:text="General environmental guidance only. This application does not provide medical diagnosis or emergency advice." android:textAppearance="@style/TextAppearance.EHM.Support" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -10,6 +10,9 @@ interface SensorReadingDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(reading: SensorReadingEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertHistorical(readings: List<SensorReadingEntity>): List<Long>
+
     @Query("SELECT * FROM sensor_readings ORDER BY timestamp DESC LIMIT 1")
     fun getLatestReading(): Flow<SensorReadingEntity?>
 

@@ -42,8 +42,8 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, state: Bundle?) {
-        val repository = (requireActivity().application as EnviroGuardApp).repository
-        viewModel = ViewModelProvider(this, ViewModelFactory(repository))[HomeViewModel::class.java]
+        val app = requireActivity().application as EnviroGuardApp
+        viewModel = ViewModelProvider(this, ViewModelFactory(app.repository, app.alertManager))[HomeViewModel::class.java]
         showUnavailableReadings()
         renderActiveDevice()
 
@@ -87,7 +87,7 @@ class HomeFragment : Fragment() {
         binding.tvEco2.text = format(reading.eco2, "%.0f ppm")
         binding.tvNoiseLevel.text = format(reading.noiseLevel, "%.0f dB estimated")
         binding.tvAirHeadline.text = if (reading.tvoc.isFinite()) "TVOC %.0f ppb".format(reading.tvoc) else "TVOC unavailable"
-        binding.tvNoiseHeadline.text = if (reading.noiseLevel.isFinite()) "Estimated %.0f dB".format(reading.noiseLevel) else "Estimate unavailable"
+        binding.tvNoiseHeadline.text = if (reading.noiseLevel.isFinite()) "Estimated Noise Level %.0f dB".format(reading.noiseLevel) else "Estimated Noise Level unavailable"
     }
 
     private fun renderAssessment(assessment: EnvironmentalAssessment) {
@@ -95,13 +95,18 @@ class HomeFragment : Fragment() {
         ConditionUi.applyChip(binding.tvThermalCondition, assessment.thermalCondition)
         ConditionUi.applyChip(binding.tvAirCondition, assessment.airCondition)
         ConditionUi.applyChip(binding.tvNoiseCondition, assessment.noiseCondition)
-        binding.tvPrimaryConcerns.text = if (assessment.primaryConcerns.isEmpty()) {
-            "No primary concern"
-        } else {
-            assessment.primaryConcerns.joinToString(" and ") { dimensionLabel(it) }
+        binding.tvPrimaryConcernsLabel.setText(if (assessment.primaryConcerns.size > 1) R.string.main_concerns else R.string.main_concern)
+        binding.tvPrimaryConcerns.text = when {
+            assessment.overallCondition == null -> "Unavailable"
+            assessment.primaryConcerns.isEmpty() -> "No primary concern"
+            else -> assessment.primaryConcerns.joinToString(" and ") { dimensionLabel(it) }
         }
         binding.tvHeatIndex.text = formatTemperature(assessment.heatIndexCelsius)
         binding.tvThermalHeadline.text = if (assessment.heatIndexCelsius?.isFinite() == true) "Heat index ${formatTemperature(assessment.heatIndexCelsius)}" else "Heat index unavailable"
+        if (assessment.overallCondition == null) {
+            binding.tvConditionContext.setText(R.string.assessment_unavailable_detail)
+            return
+        }
         val priorityGuidance = assessment.guidance.firstOrNull { it.dimension in assessment.primaryConcerns }
             ?: assessment.guidance.firstOrNull()
         binding.tvConditionContext.text = priorityGuidance?.recommendations?.firstOrNull()
@@ -174,6 +179,7 @@ class HomeFragment : Fragment() {
             view.setTextColor(ContextCompat.getColor(requireContext(), R.color.ehm_on_surface_variant))
             view.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.ehm_surface_variant))
         }
+        binding.tvPrimaryConcernsLabel.setText(R.string.main_concern)
         binding.tvPrimaryConcerns.text = "Waiting for data"
         binding.tvConditionContext.text = "Condition guidance will appear when data is available."
         binding.tvTemperature.text = "Unavailable"
@@ -184,13 +190,13 @@ class HomeFragment : Fragment() {
         binding.tvNoiseLevel.text = "Unavailable"
         binding.tvThermalHeadline.text = "Heat index unavailable"
         binding.tvAirHeadline.text = "TVOC unavailable"
-        binding.tvNoiseHeadline.text = "Estimate unavailable"
+        binding.tvNoiseHeadline.text = "Estimated Noise Level unavailable"
     }
 
     private fun dimensionLabel(dimension: EnvironmentalDimension) = when (dimension) {
-        EnvironmentalDimension.THERMAL -> "Thermal Condition"
-        EnvironmentalDimension.AIR -> "Air Quality"
-        EnvironmentalDimension.NOISE -> "Estimated Noise"
+        EnvironmentalDimension.THERMAL -> "Thermal"
+        EnvironmentalDimension.AIR -> "Air"
+        EnvironmentalDimension.NOISE -> "Noise"
     }
 
     private fun format(value: Float, pattern: String) = if (value.isFinite()) pattern.format(value) else "Unavailable"

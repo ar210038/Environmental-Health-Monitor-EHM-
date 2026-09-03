@@ -6,6 +6,7 @@ import com.enviroguard.app.data.DeviceManager
 import com.enviroguard.app.data.local.EnviroGuardDatabase
 import com.enviroguard.app.data.repository.SensorRepository
 import com.enviroguard.app.alerts.EnvironmentalAlertManager
+import com.enviroguard.app.ai.GeminiExplanationService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,9 +16,12 @@ class EnviroGuardApp : Application() {
     val database by lazy { EnviroGuardDatabase.getInstance(this) }
     val repository by lazy { SensorRepository(database) }
     val alertManager by lazy { EnvironmentalAlertManager(this) }
+    val geminiExplanationService by lazy { GeminiExplanationService() }
 
     override fun onCreate() {
         super.onCreate()
+
+        AppCheckProviderInstaller.install()
 
         // Init device manager
         DeviceManager.init(this)

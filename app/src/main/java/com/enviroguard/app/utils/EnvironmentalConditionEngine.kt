@@ -9,18 +9,19 @@ object EnvironmentalConditionEngine {
         val thermal = classifyThermal(heatIndex)
         val tvoc = classifyTvoc(reading.tvoc)
         val eco2 = classifyEco2(reading.eco2)
-        val air = maxOf(tvoc, eco2, compareBy { it.severity })
+        val air = listOfNotNull(tvoc, eco2).maxByOrNull { it.severity }
         val noise = classifyNoise(reading.noiseLevel)
-        val overall = maxOf(thermal, air, noise, compareBy { it.severity })
+        val overall = listOfNotNull(thermal, air, noise).maxByOrNull { it.severity }
         val concerns = listOf(EnvironmentalDimension.THERMAL to thermal, EnvironmentalDimension.AIR to air, EnvironmentalDimension.NOISE to noise)
-            .filter { it.second == overall && overall != EnvironmentalCondition.GOOD }.map { it.first }
+            .filter { overall != null && overall != EnvironmentalCondition.GOOD && it.second == overall }
+            .map { it.first }
         return EnvironmentalAssessment(heatIndex, thermal, tvoc, eco2, air, noise, overall, concerns,
             EnvironmentalGuidanceCatalog.forAssessment(thermal, air, noise))
     }
-    fun classifyThermal(value: Float) = when { !value.isFinite() || value < 26.7f -> EnvironmentalCondition.GOOD; value < 32.2f -> EnvironmentalCondition.MODERATE; value < 39.4f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
-    fun classifyTvoc(value: Float) = when { !value.isFinite() || value <= 222f -> EnvironmentalCondition.GOOD; value <= 667f -> EnvironmentalCondition.MODERATE; value <= 2222f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
-    fun classifyEco2(value: Float) = when { !value.isFinite() || value < 1000f -> EnvironmentalCondition.GOOD; value <= 2000f -> EnvironmentalCondition.MODERATE; else -> EnvironmentalCondition.POOR }
-    fun classifyNoise(value: Float) = when { !value.isFinite() || value < 80f -> EnvironmentalCondition.GOOD; value < 85f -> EnvironmentalCondition.MODERATE; value < 95f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
+    fun classifyThermal(value: Float): EnvironmentalCondition? = when { !value.isFinite() -> null; value < 26.7f -> EnvironmentalCondition.GOOD; value < 32.2f -> EnvironmentalCondition.MODERATE; value < 39.4f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
+    fun classifyTvoc(value: Float): EnvironmentalCondition? = when { !value.isFinite() -> null; value <= 222f -> EnvironmentalCondition.GOOD; value <= 667f -> EnvironmentalCondition.MODERATE; value <= 2222f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
+    fun classifyEco2(value: Float): EnvironmentalCondition? = when { !value.isFinite() -> null; value < 1000f -> EnvironmentalCondition.GOOD; value <= 2000f -> EnvironmentalCondition.MODERATE; else -> EnvironmentalCondition.POOR }
+    fun classifyNoise(value: Float): EnvironmentalCondition? = when { !value.isFinite() -> null; value < 80f -> EnvironmentalCondition.GOOD; value < 85f -> EnvironmentalCondition.MODERATE; value < 95f -> EnvironmentalCondition.POOR; else -> EnvironmentalCondition.CRITICAL }
 }
 
 object HeatIndex {

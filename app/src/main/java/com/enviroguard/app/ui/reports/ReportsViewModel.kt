@@ -38,6 +38,7 @@ class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
         job?.cancel()
         job = viewModelScope.launch {
             val range = when (period) { 0 -> DateRangeUtils.today(); 1 -> DateRangeUtils.last7Days(); else -> DateRangeUtils.last30Days() }
+            DeviceManager.activeDeviceId?.let(repository::ensureHistorySynchronization)
             repository.getReadingsBetween(range.startInclusive, range.endExclusive, DeviceManager.activeDeviceId).collect(::render)
         }
     }
@@ -48,11 +49,15 @@ class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
             _chartPoints.value = emptyList()
             _thermalDuration.value = "0 min"; _airDuration.value = "0 min"; _noiseDuration.value = "0 min"
             _dominantContributor.value = "Insufficient history"
-            _historicalPattern.value = "At least two timestamped readings are needed to estimate condition duration."
+            _historicalPattern.value = INSUFFICIENT_PATTERN_MESSAGE
             return
         }
         val assessments = readings.map { EnvironmentalConditionEngine.assess(it.toReading()) }
-        _chartPoints.value = readings.zip(assessments).map { it.first.timestamp to it.second.overallCondition.severity.toFloat() }
+        val chartPoints = readings.zip(assessments).mapNotNull { (reading, assessment) ->
+            assessment.overallCondition?.let { reading.timestamp to it.severity.toFloat() }
+        }
+        _chartPoints.value = chartPoints
+        _isEmpty.value = chartPoints.size < 2
         val durations = concernDurations(readings, assessments)
         _thermalDuration.value = formatDuration(durations.getValue(EnvironmentalDimension.THERMAL))
         _airDuration.value = formatDuration(durations.getValue(EnvironmentalDimension.AIR))
@@ -73,9 +78,9 @@ class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
             val gap = pair.second.timestamp - pair.first.timestamp
             if (gap in 1..150_000) {
                 val assessment = assessments[index]
-                if (assessment.thermalCondition.severity > 0) result[EnvironmentalDimension.THERMAL] = result.getValue(EnvironmentalDimension.THERMAL) + gap
-                if (assessment.airCondition.severity > 0) result[EnvironmentalDimension.AIR] = result.getValue(EnvironmentalDimension.AIR) + gap
-                if (assessment.noiseCondition.severity > 0) result[EnvironmentalDimension.NOISE] = result.getValue(EnvironmentalDimension.NOISE) + gap
+                if ((assessment.thermalCondition?.severity ?: 0) > 0) result[EnvironmentalDimension.THERMAL] = result.getValue(EnvironmentalDimension.THERMAL) + gap
+                if ((assessment.airCondition?.severity ?: 0) > 0) result[EnvironmentalDimension.AIR] = result.getValue(EnvironmentalDimension.AIR) + gap
+                if ((assessment.noiseCondition?.severity ?: 0) > 0) result[EnvironmentalDimension.NOISE] = result.getValue(EnvironmentalDimension.NOISE) + gap
             }
         }
         return result
@@ -90,16 +95,16 @@ class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
             val date = Date(reading.timestamp)
             val hour = SimpleDateFormat("H", Locale.US).format(date).toInt()
             val day = dayFormat.format(date)
-            listOf(
-                Sample(EnvironmentalDimension.THERMAL, hour, day, assessment.thermalCondition.severity),
-                Sample(EnvironmentalDimension.AIR, hour, day, assessment.airCondition.severity),
-                Sample(EnvironmentalDimension.NOISE, hour, day, assessment.noiseCondition.severity)
+            listOfNotNull(
+                assessment.thermalCondition?.let { Sample(EnvironmentalDimension.THERMAL, hour, day, it.severity) },
+                assessment.airCondition?.let { Sample(EnvironmentalDimension.AIR, hour, day, it.severity) },
+                assessment.noiseCondition?.let { Sample(EnvironmentalDimension.NOISE, hour, day, it.severity) }
             )
         }
         val recurring = samples.groupBy { it.dimension to it.hour }
             .filterValues { group -> group.map { it.day }.distinct().size >= 3 }
-        if (recurring.isEmpty()) return "Not enough historical data yet. Hourly patterns require readings from at least three separate days."
-        val best = recurring.maxByOrNull { (_, group) -> group.map { it.severity }.average() } ?: return "Not enough historical data yet."
+        if (recurring.isEmpty()) return INSUFFICIENT_PATTERN_MESSAGE
+        val best = recurring.maxByOrNull { (_, group) -> group.map { it.severity }.average() } ?: return INSUFFICIENT_PATTERN_MESSAGE
         val averageSeverity = best.value.map { it.severity }.average()
         if (averageSeverity <= 0.0) return "No recurring unfavorable hourly pattern was detected in the available multi-day history."
         val hourLabel = SimpleDateFormat("h a", Locale.getDefault()).format(Calendar.getInstance().apply { set(Calendar.HOUR_OF_DAY, best.key.second); set(Calendar.MINUTE, 0) }.time)
@@ -108,4 +113,8 @@ class ReportsViewModel(private val repository: SensorRepository) : ViewModel() {
 
     fun getXAxisLabel(timestamp: Long, period: Int): String = SimpleDateFormat(if (period == 0) "HH:mm" else "MM/dd", Locale.getDefault()).format(Date(timestamp))
     private fun SensorReadingEntity.toReading() = SensorReading(temperature, humidity, tvoc, eco2, noiseLevel, timestamp)
+
+    companion object {
+        private const val INSUFFICIENT_PATTERN_MESSAGE = "Readings from multiple days are needed to identify recurring time-based patterns."
+    }
 }

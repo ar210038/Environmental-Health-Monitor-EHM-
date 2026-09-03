@@ -142,6 +142,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvPrimaryConcernsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_16"
@@ -249,7 +250,7 @@
 
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="AIR" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
                 <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TVOC" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvTvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="eCO₂ equivalent" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvEco2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="eCO2 equivalent" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvEco2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
 
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="NOISE" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
                 <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Estimated Noise Level" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvNoiseLevel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>

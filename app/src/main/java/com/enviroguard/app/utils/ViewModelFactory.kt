@@ -7,17 +7,19 @@ import com.enviroguard.app.ui.home.HomeViewModel
 import com.enviroguard.app.ui.reports.ReportsViewModel
 import com.enviroguard.app.ui.history.HistoryViewModel
 import com.enviroguard.app.alerts.EnvironmentalAlertManager
+import com.enviroguard.app.ai.GeminiExplanationService
 
 class ViewModelFactory(
     private val repository: SensorRepository,
-    private val alertManager: EnvironmentalAlertManager? = null
+    private val alertManager: EnvironmentalAlertManager? = null,
+    private val geminiExplanationService: GeminiExplanationService? = null
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) ->
-                HomeViewModel(repository) as T
+                HomeViewModel(repository, alertManager, geminiExplanationService) as T
             modelClass.isAssignableFrom(ReportsViewModel::class.java) ->
                 ReportsViewModel(repository) as T
             modelClass.isAssignableFrom(HistoryViewModel::class.java) ->

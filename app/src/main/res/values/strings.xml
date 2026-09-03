@@ -30,4 +30,13 @@
     <string name="setup_selected_network">Selected network: %1$s</string>
     <string name="setup_password_not_required">Password (not required)</string>
     <string name="setup_password_required">Enter the Wi-Fi password for %1$s.</string>
+    <string name="status_unavailable">Unavailable</string>
+    <string name="main_concern">Main concern</string>
+    <string name="main_concerns">Main concerns</string>
+    <string name="assessment_unavailable_detail">Assessment unavailable until at least one environmental dimension has a valid measurement.</string>
+    <string name="add_monitoring_device">Add monitoring device</string>
+    <string name="add_another_monitoring_device">Add another monitoring device</string>
+    <string name="ai_explanation_loading">Creating an optional AI explanation…</string>
+    <string name="ai_explanation_live_label">AI explanation of the current measurement snapshot</string>
+    <string name="ai_explanation_demo_label">AI explanation of demo/test measurements — not live data</string>
 </resources>

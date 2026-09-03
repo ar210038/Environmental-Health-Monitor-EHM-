@@ -73,6 +73,7 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
 
         dataJob = viewModelScope.launch {
             val range = getTimeRange(_selectedRange.value ?: 0)
+            DeviceManager.activeDeviceId?.let(repository::ensureHistorySynchronization)
             repository.getReadingsBetween(
                 range.startInclusive,
                 range.endExclusive,
@@ -157,7 +158,7 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
     }
 
     private fun sensorName(): String = listOf(
-        "Temperature", "Humidity", "Heat Index", "TVOC", "eCO₂ equivalent", "Estimated Noise"
+        "Temperature", "Humidity", "Heat Index", "TVOC", "eCO2 equivalent", "Estimated Noise Level"
     )[_selectedSensor.value ?: 0]
 
     private fun getTimeRange(range: Int) = when (range) {

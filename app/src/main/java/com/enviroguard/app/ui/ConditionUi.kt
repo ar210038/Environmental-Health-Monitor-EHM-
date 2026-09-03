@@ -24,7 +24,13 @@ object ConditionUi {
         EnvironmentalCondition.CRITICAL -> R.color.ehm_critical_container
     }
 
-    fun applyChip(view: TextView, condition: EnvironmentalCondition) {
+    fun applyChip(view: TextView, condition: EnvironmentalCondition?) {
+        if (condition == null) {
+            view.text = view.context.getString(R.string.status_unavailable)
+            view.setTextColor(ContextCompat.getColor(view.context, R.color.ehm_on_surface_variant))
+            view.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, R.color.ehm_surface_variant))
+            return
+        }
         view.text = condition.displayName
         view.setTextColor(ContextCompat.getColor(view.context, accent(condition)))
         view.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, container(condition)))

@@ -6,7 +6,7 @@ enum class EnvironmentalCondition(val severity: Int, val displayName: String) {
 }
 
 enum class EnvironmentalDimension(val displayName: String) {
-    THERMAL("Thermal"), AIR("Air Quality"), NOISE("Noise")
+    THERMAL("Thermal"), AIR("Air"), NOISE("Noise")
 }
 
 data class EnvironmentalGuidance(
@@ -21,12 +21,12 @@ data class EnvironmentalGuidance(
 
 data class EnvironmentalAssessment(
     val heatIndexCelsius: Float?,
-    val thermalCondition: EnvironmentalCondition,
-    val tvocCondition: EnvironmentalCondition,
-    val eco2Condition: EnvironmentalCondition,
-    val airCondition: EnvironmentalCondition,
-    val noiseCondition: EnvironmentalCondition,
-    val overallCondition: EnvironmentalCondition,
+    val thermalCondition: EnvironmentalCondition?,
+    val tvocCondition: EnvironmentalCondition?,
+    val eco2Condition: EnvironmentalCondition?,
+    val airCondition: EnvironmentalCondition?,
+    val noiseCondition: EnvironmentalCondition?,
+    val overallCondition: EnvironmentalCondition?,
     val primaryConcerns: List<EnvironmentalDimension>,
     val guidance: List<EnvironmentalGuidance>
 )

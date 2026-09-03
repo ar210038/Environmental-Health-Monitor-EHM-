@@ -21,6 +21,7 @@ import com.enviroguard.app.model.EnvironmentalGuidance
 import com.enviroguard.app.ui.ConditionUi
 import com.enviroguard.app.ui.home.HomeViewModel
 import com.enviroguard.app.utils.ViewModelFactory
+import com.enviroguard.app.ai.AiExplanationState
 import com.google.android.material.card.MaterialCardView
 
 class GuidanceFragment : Fragment() {
@@ -34,8 +35,11 @@ class GuidanceFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, state: Bundle?) {
-        val repository = (requireActivity().application as EnviroGuardApp).repository
-        viewModel = ViewModelProvider(this, ViewModelFactory(repository))[HomeViewModel::class.java]
+        val app = requireActivity().application as EnviroGuardApp
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(app.repository, app.alertManager, app.geminiExplanationService)
+        )[HomeViewModel::class.java]
         viewModel.status.observe(viewLifecycleOwner) { status ->
             binding.tvGuidanceStatus.text = when (status) {
                 "No Device" -> "No monitoring device configured."
@@ -48,12 +52,45 @@ class GuidanceFragment : Fragment() {
         viewModel.assessment.observe(viewLifecycleOwner) { assessment ->
             assessment?.let(::renderAssessment) ?: renderUnavailable()
         }
-        binding.btnAskAi.setOnClickListener { binding.tvAiStatus.text = "AI environmental guidance is not connected yet." }
+        viewModel.aiExplanationState.observe(viewLifecycleOwner, ::renderAiState)
+        binding.btnAskAi.setOnClickListener { viewModel.requestAiExplanation() }
         viewModel.initialise()
     }
 
+    private fun renderAiState(state: AiExplanationState) {
+        binding.btnAskAi.isEnabled = state !is AiExplanationState.Loading
+        binding.aiLoading.visibility = if (state is AiExplanationState.Loading) View.VISIBLE else View.GONE
+        when (state) {
+            AiExplanationState.Idle -> {
+                binding.tvAiStatus.text = ""
+                binding.cardAiExplanation.visibility = View.GONE
+            }
+            AiExplanationState.Loading -> {
+                binding.tvAiStatus.setText(R.string.ai_explanation_loading)
+                binding.cardAiExplanation.visibility = View.GONE
+            }
+            is AiExplanationState.Success -> {
+                binding.tvAiStatus.text = ""
+                binding.tvAiExplanationLabel.setText(
+                    if (state.isDemo) R.string.ai_explanation_demo_label else R.string.ai_explanation_live_label
+                )
+                binding.tvAiExplanation.text = state.text
+                binding.cardAiExplanation.visibility = View.VISIBLE
+            }
+            is AiExplanationState.Error -> {
+                binding.tvAiStatus.text = state.message
+                binding.cardAiExplanation.visibility = View.GONE
+            }
+        }
+    }
+
     private fun renderAssessment(assessment: EnvironmentalAssessment) {
+        if (assessment.overallCondition == null) {
+            renderUnavailable()
+            return
+        }
         ConditionUi.applyChip(binding.tvGuidanceCondition, assessment.overallCondition)
+        binding.tvGuidanceConcernsLabel.setText(if (assessment.primaryConcerns.size > 1) R.string.main_concerns else R.string.main_concern)
         binding.tvGuidanceConcerns.text = if (assessment.primaryConcerns.isEmpty()) {
             "No primary concern\nCurrent measurements are within normal advisory ranges. Continue monitoring for changes."
         } else {
@@ -68,6 +105,7 @@ class GuidanceFragment : Fragment() {
     }
 
     private fun renderUnavailable() {
+        binding.tvGuidanceConcernsLabel.setText(R.string.main_concern)
         binding.tvGuidanceCondition.apply {
             text = "NO CURRENT DATA"
             setTextColor(ContextCompat.getColor(requireContext(), R.color.ehm_on_surface_variant))
@@ -162,9 +200,9 @@ class GuidanceFragment : Fragment() {
     }
 
     private fun dimensionLabel(dimension: EnvironmentalDimension) = when (dimension) {
-        EnvironmentalDimension.THERMAL -> "Thermal Condition"
-        EnvironmentalDimension.AIR -> "Air Quality"
-        EnvironmentalDimension.NOISE -> "Estimated Noise"
+        EnvironmentalDimension.THERMAL -> "Thermal"
+        EnvironmentalDimension.AIR -> "Air"
+        EnvironmentalDimension.NOISE -> "Noise"
     }
 
     private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()

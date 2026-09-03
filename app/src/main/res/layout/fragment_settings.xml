@@ -29,16 +29,16 @@
                         <TextView android:id="@+id/tvCurrentDeviceName" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No monitoring device" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold" />
                         <TextView android:id="@+id/tvCurrentDeviceId" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Not configured" android:textAppearance="@style/TextAppearance.EHM.Support" />
                     </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_condition_chip" android:text="CURRENT" android:textColor="@color/ehm_primary" android:textSize="11sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/tvCurrentDeviceBadge" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_condition_chip" android:text="CURRENT" android:textColor="@color/ehm_primary" android:textSize="11sp" android:textStyle="bold" android:visibility="gone" />
                 </LinearLayout>
                 <TextView android:id="@+id/tvDeviceCount" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:text="No registered devices" android:textAppearance="@style/TextAppearance.EHM.Support" />
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:orientation="horizontal">
                     <com.google.android.material.button.MaterialButton android:id="@+id/btnManageDevices" style="@style/Widget.EHM.Button.Outlined" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="4dp" android:layout_weight="1" android:text="Manage" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btnChangeWifi" style="@style/Widget.EHM.Button.Outlined" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="4dp" android:layout_weight="1" android:text="Change Wi-Fi" />
                 </LinearLayout>
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnSetUpDevice" style="@style/Widget.EHM.Button.Filled" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="Add another monitoring device" />
+                <com.google.android.material.button.MaterialButton android:id="@+id/btnSetUpDevice" style="@style/Widget.EHM.Button.Filled" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="Add monitoring device" />
                 <com.google.android.material.button.MaterialButton android:id="@+id/btnForgetDevice" style="@style/Widget.EHM.Button.Outlined" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="Forget current device" android:textColor="@color/ehm_error" app:strokeColor="@color/ehm_error" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:text="Additional devices can be registered and selected. Simultaneous aggregate monitoring is future work." android:textAppearance="@style/TextAppearance.EHM.Support" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:text="One monitoring device is active at a time." android:textAppearance="@style/TextAppearance.EHM.Support" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -56,7 +56,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="DEVELOPMENT / DATA" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="DATA &amp; TESTING" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
                 <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switchDemoMode" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="Demo mode" android:textAppearance="@style/TextAppearance.EHM.Body" />
@@ -70,8 +70,8 @@
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
                 <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Environmental Health Monitor" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="DHT22 temperature and humidity • SGP30 TVOC and eCO₂ equivalent • INMP441 estimated noise" android:textAppearance="@style/TextAppearance.EHM.Support" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="eCO₂ is an equivalent signal, not direct CO₂. Noise is estimated and not a calibrated sound-level measurement." android:textAppearance="@style/TextAppearance.EHM.Support" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="DHT22 temperature and humidity • SGP30 TVOC and eCO2 equivalent • INMP441 Estimated Noise Level" android:textAppearance="@style/TextAppearance.EHM.Support" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="SGP30 reports an eCO2 equivalent signal. The INMP441 noise level is estimated and not a calibrated sound-level measurement." android:textAppearance="@style/TextAppearance.EHM.Support" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
