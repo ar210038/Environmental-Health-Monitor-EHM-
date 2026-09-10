@@ -46,6 +46,7 @@ class GuidanceFragment : Fragment() {
                 "Waiting for environmental data" -> "Waiting for environmental data..."
                 "Environmental data unavailable" -> "Guidance is temporarily unavailable because current data could not be loaded."
                 "Demo Mode" -> "Guidance based on clearly labelled demo measurements."
+                "Scenario Test" -> "Scenario Test — simulated values, not live sensor data. Guidance uses the deterministic assessment."
                 else -> "Guidance based on the current deterministic environmental assessment."
             }
         }

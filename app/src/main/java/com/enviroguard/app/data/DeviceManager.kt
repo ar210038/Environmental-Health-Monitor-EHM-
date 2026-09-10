@@ -2,6 +2,7 @@ package com.enviroguard.app.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.enviroguard.app.demo.ScenarioTestManager
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -38,7 +39,10 @@ object DeviceManager {
 
     var isDemoMode: Boolean
         get() = prefs.getBoolean("demo_mode", true)
-        set(value) = prefs.edit().putBoolean("demo_mode", value).apply()
+        set(value) {
+            if (!value) ScenarioTestManager.clear()
+            prefs.edit().putBoolean("demo_mode", value).apply()
+        }
 
     var notificationsEnabled: Boolean
         get() = prefs.getBoolean("notifications_enabled", true)

@@ -3,6 +3,7 @@ package com.enviroguard.app.ui.home
 import androidx.lifecycle.*
 import com.enviroguard.app.data.DeviceManager
 import com.enviroguard.app.data.repository.SensorRepository
+import com.enviroguard.app.demo.ScenarioTestManager
 import com.enviroguard.app.model.*
 import com.enviroguard.app.utils.EnvironmentalConditionEngine
 import com.enviroguard.app.alerts.EnvironmentalAlertManager
@@ -30,7 +31,10 @@ class HomeViewModel(
     private var aiRequest: Job? = null
     fun initialise() {
         listener?.cancel()
-        if (DeviceManager.isDemoMode) show(repository.getDemoReading(), "Demo Mode")
+        if (DeviceManager.isDemoMode) {
+            val scenarioReading = ScenarioTestManager.currentReading(demoModeEnabled = true)
+            show(scenarioReading ?: repository.getDemoReading(), if (scenarioReading == null) "Demo Mode" else "Scenario Test")
+        }
         else DeviceManager.activeDeviceId?.let { id ->
             repository.ensureHistorySynchronization(id)
             _status.value = "Waiting for environmental data"

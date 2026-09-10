@@ -39,4 +39,11 @@
     <string name="ai_explanation_loading">Creating an optional AI explanation…</string>
     <string name="ai_explanation_live_label">AI explanation of the current measurement snapshot</string>
     <string name="ai_explanation_demo_label">AI explanation of demo/test measurements — not live data</string>
+    <string name="scenario_test_button">Test Environmental Scenario</string>
+    <string name="scenario_test_support">Enter simulated environmental values to demonstrate how EHM responds. These values are not live sensor data and are not saved.</string>
+    <string name="scenario_temperature_hint">Temperature (°C)</string>
+    <string name="scenario_humidity_hint">Humidity (%)</string>
+    <string name="scenario_tvoc_hint">TVOC (ppb)</string>
+    <string name="scenario_eco2_hint">eCO2 equivalent (ppm)</string>
+    <string name="scenario_noise_hint">Estimated Noise Level (dB)</string>
 </resources>

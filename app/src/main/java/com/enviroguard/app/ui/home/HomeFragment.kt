@@ -53,8 +53,10 @@ class HomeFragment : Fragment() {
                 "Waiting for environmental data" -> "Waiting for environmental data..."
                 "Environmental data unavailable" -> "Current data is temporarily unavailable. Last valid values remain visible when available."
                 "Demo Mode" -> "Demo values are shown for interface testing and are not live measurements."
+                "Scenario Test" -> "Simulated values — not live sensor data"
                 else -> "Live environmental measurements"
             }
+            renderActiveDevice()
             renderFreshness()
         }
 
@@ -77,7 +79,11 @@ class HomeFragment : Fragment() {
 
     private fun renderActiveDevice() {
         val active = DeviceManager.getActiveDevice()
-        binding.tvActiveDeviceName.text = active?.displayName ?: "No monitoring device"
+        binding.tvActiveDeviceName.text = if (viewModel.status.value == "Scenario Test") {
+            "Scenario Test"
+        } else {
+            active?.displayName ?: "No monitoring device"
+        }
     }
 
     private fun renderReading(reading: SensorReading) {
@@ -117,6 +123,7 @@ class HomeFragment : Fragment() {
         val active = DeviceManager.getActiveDevice()
         val status = viewModel.status.value
         binding.tvConnectionStatus.text = when {
+            status == "Scenario Test" -> "Simulated values — not live sensor data"
             DeviceManager.isDemoMode -> "Demo data • Not a live measurement"
             active == null -> "No monitoring device configured"
             status == "Environmental data unavailable" && lastReading == null -> "Current data unavailable"
