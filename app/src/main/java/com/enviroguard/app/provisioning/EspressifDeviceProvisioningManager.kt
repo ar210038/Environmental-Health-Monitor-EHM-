@@ -61,7 +61,7 @@ class EspressifDeviceProvisioningManager(
 
     override fun findDevices() {
         val permission = requiredRuntimePermission()
-        if (permission != null && ContextCompat.checkSelfPermission(appContext, permission) != PackageManager.PERMISSION_GRANTED) {
+        if (permission != null) {
             _state.value = ProvisioningState.PermissionRequired(permission)
             return
         }
@@ -83,6 +83,7 @@ class EspressifDeviceProvisioningManager(
         try {
             discoverWithEspressif(token)
         } catch (_: SecurityException) {
+            nextOperation()
             _state.value = ProvisioningState.PermissionRequired(permission ?: Manifest.permission.ACCESS_FINE_LOCATION)
         } catch (_: Exception) {
             fail(
@@ -177,6 +178,8 @@ class EspressifDeviceProvisioningManager(
             connectToSoftAp(created, normalized, token)
         } catch (_: SecurityException) {
             val permission = requiredRuntimePermission() ?: Manifest.permission.ACCESS_FINE_LOCATION
+            nextOperation()
+            releaseSoftApBinding()
             _state.value = ProvisioningState.PermissionRequired(permission)
         } catch (_: Exception) {
             fail(
@@ -493,10 +496,10 @@ class EspressifDeviceProvisioningManager(
         _state.value = ProvisioningState.Failed(code, message, retryAction)
     }
 
-    private fun requiredRuntimePermission(): String? = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> Manifest.permission.NEARBY_WIFI_DEVICES
-        else -> Manifest.permission.ACCESS_FINE_LOCATION
-    }
+    private fun requiredRuntimePermission(): String? =
+        ProvisioningPermissions.firstMissing(Build.VERSION.SDK_INT) {
+            ContextCompat.checkSelfPermission(appContext, it) == PackageManager.PERMISSION_GRANTED
+        }
 
     private fun nextOperation(): Long {
         timeoutJob?.cancel()

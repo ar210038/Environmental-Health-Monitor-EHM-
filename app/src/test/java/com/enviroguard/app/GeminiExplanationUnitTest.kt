@@ -1,7 +1,7 @@
 package com.enviroguard.app
 
 import com.enviroguard.app.ai.AiExplanationState
-import com.enviroguard.app.ai.GeminiDebugDiagnostics
+import com.enviroguard.app.ai.GeminiDiagnosticFormatter
 import com.enviroguard.app.ai.GeminiExplanationClient
 import com.enviroguard.app.ai.GeminiExplanationContextFactory
 import com.enviroguard.app.ai.GeminiExplanationService
@@ -191,7 +191,7 @@ class GeminiExplanationUnitTest {
             503,
             "token=secret-token API key=$fakeApiKey endpoint=https://example.test/path?key=secret"
         )
-        val diagnostic = GeminiDebugDiagnostics.format(error)
+        val diagnostic = GeminiDiagnosticFormatter.format(error)
 
         assertTrue(diagnostic.contains("httpStatus=503"))
         assertTrue(diagnostic.contains("exception=${GeminiWorkerHttpException::class.java.name}"))

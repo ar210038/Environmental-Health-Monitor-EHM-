@@ -9,7 +9,6 @@ import com.enviroguard.app.data.local.entity.SensorReadingEntity
 import com.enviroguard.app.data.repository.SensorRepository
 import com.enviroguard.app.model.EnvironmentalAssessment
 import com.enviroguard.app.model.EnvironmentalDimension
-import com.enviroguard.app.model.SensorReading
 import com.enviroguard.app.utils.DateRangeUtils
 import com.enviroguard.app.utils.EnvironmentalConditionEngine
 import com.enviroguard.app.forecast.EnvironmentalForecastService
@@ -153,7 +152,6 @@ class ReportsViewModel(
     }
 
     fun getXAxisLabel(timestamp: Long, period: Int): String = SimpleDateFormat(if (period == 0) "HH:mm" else "MM/dd", Locale.getDefault()).format(Date(timestamp))
-    private fun SensorReadingEntity.toReading() = SensorReading(temperature, humidity, tvoc, eco2, noiseLevel, timestamp)
 
     companion object {
         private const val INSUFFICIENT_PATTERN_MESSAGE = "Readings from multiple days are needed to identify recurring time-based patterns."

@@ -29,8 +29,16 @@ class HomeViewModel(
     val aiExplanationState: LiveData<AiExplanationState> = _aiExplanationState
     private var listener: Job? = null
     private var aiRequest: Job? = null
+    private var displayingDemo = false
     fun initialise() {
         listener?.cancel()
+        if (displayingDemo && !DeviceManager.isDemoMode) {
+            _sensorReading.value = null
+            _assessment.value = null
+            aiRequest?.cancel()
+            _aiExplanationState.value = AiExplanationState.Idle
+        }
+        displayingDemo = DeviceManager.isDemoMode
         if (DeviceManager.isDemoMode) {
             val scenarioReading = ScenarioTestManager.currentReading(demoModeEnabled = true)
             show(scenarioReading ?: repository.getDemoReading(), if (scenarioReading == null) "Demo Mode" else "Scenario Test")

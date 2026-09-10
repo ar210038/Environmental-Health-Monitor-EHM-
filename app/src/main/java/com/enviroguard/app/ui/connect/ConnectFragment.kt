@@ -30,6 +30,7 @@ import com.enviroguard.app.provisioning.ProvisioningFailureCode
 import com.enviroguard.app.provisioning.ProvisioningNetwork
 import com.enviroguard.app.provisioning.ProvisioningRetryAction
 import com.enviroguard.app.provisioning.ProvisioningState
+import com.enviroguard.app.provisioning.ProvisioningPermissions
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.launch
 
@@ -41,12 +42,10 @@ class ConnectFragment : Fragment() {
     private var selectedNetwork: ProvisioningNetwork? = null
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { grants ->
-        val granted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            grants[Manifest.permission.NEARBY_WIFI_DEVICES] == true
-        } else {
-            grants[Manifest.permission.ACCESS_FINE_LOCATION] == true
+        val missing = ProvisioningPermissions.firstMissing(Build.VERSION.SDK_INT) { permission ->
+            grants[permission] ?: (ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED)
         }
-        if (granted) viewModel.findDevices() else viewModel.permissionDenied(requestedPermission)
+        if (missing == null) viewModel.findDevices() else viewModel.permissionDenied(missing)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
@@ -302,11 +301,7 @@ class ConnectFragment : Fragment() {
         return "$permissionName permission lets Android scan for temporary EHM setup networks. EHM does not collect or store GPS location.$suffix"
     }
 
-    private fun runtimePermissions(): Array<String> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        arrayOf(Manifest.permission.NEARBY_WIFI_DEVICES)
-    } else {
-        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-    }
+    private fun runtimePermissions(): Array<String> = ProvisioningPermissions.requested(Build.VERSION.SDK_INT)
 
     private fun openWifiControls() {
         val action = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) Settings.Panel.ACTION_WIFI else Settings.ACTION_WIFI_SETTINGS

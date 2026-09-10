@@ -41,6 +41,9 @@ android {
         viewBinding = true
         buildConfig = true
     }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -90,6 +93,9 @@ dependencies {
 
     // Testing
     testImplementation(libs.junit)
+    // Runs the generated Room DAO against SQLite without requiring physical hardware.
+    testImplementation("org.robolectric:robolectric:4.16.1")
+    testImplementation("org.mockito:mockito-core:5.14.2")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

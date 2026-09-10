@@ -124,7 +124,8 @@ class HistoryViewModel(private val repository: SensorRepository) : ViewModel() {
         return list.filterIndexed { index, _ -> index % step == 0 }
     }
 
-    fun getValueForSensor(reading: SensorReadingEntity): Float {
+    fun getValueForSensor(entity: SensorReadingEntity): Float {
+        val reading = entity.toReading()
         return when (_selectedSensor.value) {
             0    -> if (DeviceManager.useCelsius) reading.temperature
                     else TemperatureUtils.celsiusToFahrenheit(reading.temperature)

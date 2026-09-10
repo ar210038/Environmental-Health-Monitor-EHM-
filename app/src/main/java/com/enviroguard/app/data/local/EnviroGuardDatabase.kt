@@ -14,7 +14,7 @@ import com.enviroguard.app.data.local.entity.SensorReadingEntity
     entities = [
         SensorReadingEntity::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class EnviroGuardDatabase : RoomDatabase() {
@@ -36,8 +36,20 @@ abstract class EnviroGuardDatabase : RoomDatabase() {
                     .addMigrations(MIGRATION_4_5)
                     .addMigrations(MIGRATION_5_6)
                     .addMigrations(MIGRATION_6_7)
+                    .addMigrations(MIGRATION_7_8)
                     .build()
                     .also { INSTANCE = it }
+            }
+        }
+
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Preserve row IDs and every observation; only measurement nullability changes.
+                db.execSQL("CREATE TABLE sensor_readings_new (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, deviceId TEXT NOT NULL, timestamp INTEGER NOT NULL, temperature REAL, humidity REAL, eco2 REAL, tvoc REAL, noiseLevel REAL)")
+                db.execSQL("INSERT INTO sensor_readings_new (id, deviceId, timestamp, temperature, humidity, eco2, tvoc, noiseLevel) SELECT id, deviceId, timestamp, temperature, humidity, eco2, tvoc, noiseLevel FROM sensor_readings")
+                db.execSQL("DROP TABLE sensor_readings")
+                db.execSQL("ALTER TABLE sensor_readings_new RENAME TO sensor_readings")
+                db.execSQL("CREATE UNIQUE INDEX index_sensor_readings_deviceId_timestamp ON sensor_readings(deviceId, timestamp)")
             }
         }
 

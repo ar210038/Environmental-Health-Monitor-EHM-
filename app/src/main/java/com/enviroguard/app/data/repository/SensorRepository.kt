@@ -82,12 +82,12 @@ class SensorRepository(private val database: EnviroGuardDatabase) {
     fun observeLatestReadingForDevice(deviceId: String): Flow<SensorReading?> =
         database.sensorReadingDao().observeLatestReadingForDevice(deviceId).map { entity ->
             entity?.let {
-                SensorReading(it.temperature, it.humidity, it.tvoc, it.eco2, it.noiseLevel, it.timestamp)
+                it.toReading()
             }
         }
     fun getDemoReading() = SensorReading(Constants.DEMO_TEMP, Constants.DEMO_HUMIDITY, Constants.DEMO_TVOC, Constants.DEMO_ECO2, Constants.DEMO_NOISE)
     companion object {
         private const val HISTORY_RETRY_DELAY_MS = 15_000L
-        internal fun createRawEntity(reading: SensorReading, deviceId: String) = SensorReadingEntity(deviceId = deviceId, timestamp = reading.timestamp, temperature = reading.temperature, humidity = reading.humidity, tvoc = reading.tvoc, eco2 = reading.eco2, noiseLevel = reading.noiseLevel)
+        internal fun createRawEntity(reading: SensorReading, deviceId: String) = SensorReadingEntity.fromReading(reading, deviceId)
     }
 }
