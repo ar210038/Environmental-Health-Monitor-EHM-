@@ -15,7 +15,7 @@
         <item name="android:colorBackground">@color/ehm_background</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@color/ehm_background</item>
-        <item name="android:navigationBarColor">@color/ehm_surface</item>
+        <item name="android:navigationBarColor">@color/ehm_background</item>
     </style>
 
     <style name="Theme.EnviroGuard" parent="Base.Theme.EnviroGuard" />

@@ -1,88 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/ehm_background"
-    android:clipToPadding="false">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/page_padding"
-        android:paddingTop="@dimen/space_20"
-        android:paddingEnd="@dimen/page_padding"
-        android:paddingBottom="104dp">
-
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/ehm_background" android:clipToPadding="false">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="@dimen/page_padding" android:paddingTop="@dimen/space_20" android:paddingEnd="@dimen/page_padding" android:paddingBottom="@dimen/space_24">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Health Guidance" android:textAppearance="@style/TextAppearance.EHM.PageTitle" />
         <TextView android:id="@+id/tvGuidanceStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_4" android:text="Waiting for environmental data..." android:textAppearance="@style/TextAppearance.EHM.Support" />
 
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.EHM.Card.Tonal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_20">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/space_20">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CURRENT CONDITION" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
-                <TextView android:id="@+id/tvGuidanceCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="26sp" android:textStyle="bold" />
-                <TextView android:id="@+id/tvGuidanceConcernsLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="Main concern" android:textAppearance="@style/TextAppearance.EHM.Support" />
-                <TextView android:id="@+id/tvGuidanceConcerns" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="No current assessment" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding_large">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CURRENT CONDITION" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
+                        <TextView android:id="@+id/tvGuidanceConcernsLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:text="MAIN CONCERN" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
+                        <TextView android:id="@+id/tvGuidanceConcerns" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="No current assessment" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+                    </LinearLayout>
+                    <TextView android:id="@+id/tvGuidanceCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="20sp" android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:layout_marginBottom="@dimen/space_12" android:text="Recommended guidance" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="Recommended guidance" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:layout_marginBottom="@dimen/space_12" android:text="Deterministic actions based on the current assessment" android:textAppearance="@style/TextAppearance.EHM.Support" />
         <LinearLayout android:id="@+id/guidanceContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAskAi"
-            style="@style/Widget.EHM.Button.Outlined"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_16"
-            android:text="Ask AI About My Environment"
-            app:icon="@drawable/ic_guidance" />
-
-        <TextView android:id="@+id/tvAiStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="" android:textAppearance="@style/TextAppearance.EHM.Support" />
-
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/aiLoading"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/space_8"
-            android:indeterminate="true"
-            android:visibility="gone" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardAiExplanation"
-            style="@style/Widget.EHM.Card.Tonal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_12"
-            android:visibility="gone">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/space_20">
-                <TextView
-                    android:id="@+id/tvAiExplanationLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ai_explanation_live_label"
-                    android:textAppearance="@style/TextAppearance.EHM.Support"
-                    android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/tvAiExplanation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_8"
-                    android:textAppearance="@style/TextAppearance.EHM.Body" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="Optional explanation" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Ai" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding_large">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
+                    <ImageView android:layout_width="@dimen/icon_container_size" android:layout_height="@dimen/icon_container_size" android:background="@drawable/bg_icon_container" android:backgroundTint="@color/ehm_ai_container" android:contentDescription="AI explanation" android:padding="10dp" android:src="@drawable/ic_spark" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AI EXPLANATION" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" android:textColor="@color/ehm_ai_accent" />
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Ask for a concise explanation of the measured environment. Core guidance above remains available without AI." android:textAppearance="@style/TextAppearance.EHM.Support" />
+                    </LinearLayout>
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton android:id="@+id/btnAskAi" style="@style/Widget.EHM.Button.Outlined" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="Explain My Environment" app:icon="@drawable/ic_spark" app:iconTint="@color/ehm_ai_accent" app:strokeColor="@color/ehm_ai_accent" />
+                <TextView android:id="@+id/tvAiStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="" android:textAppearance="@style/TextAppearance.EHM.Support" />
+                <com.google.android.material.progressindicator.CircularProgressIndicator android:id="@+id/aiLoading" android:layout_width="32dp" android:layout_height="32dp" android:layout_gravity="center_horizontal" android:layout_marginTop="@dimen/space_8" android:indeterminate="true" android:visibility="gone" app:indicatorColor="@color/ehm_ai_accent" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:text="General environmental guidance only. This application does not provide medical diagnosis or emergency advice." android:textAppearance="@style/TextAppearance.EHM.Support" />
+        <com.google.android.material.card.MaterialCardView android:id="@+id/cardAiExplanation" style="@style/Widget.EHM.Card.Ai" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:visibility="gone">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding_large">
+                <TextView android:id="@+id/tvAiExplanationLabel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ai_explanation_live_label" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" android:textColor="@color/ehm_ai_accent" />
+                <TextView android:id="@+id/tvAiExplanation" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:textAppearance="@style/TextAppearance.EHM.Body" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="@dimen/card_padding" android:text="General environmental guidance only. This application does not provide medical diagnosis or emergency advice." android:textAppearance="@style/TextAppearance.EHM.Support" />
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

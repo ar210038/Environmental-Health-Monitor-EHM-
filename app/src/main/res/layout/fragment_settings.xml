@@ -16,15 +16,15 @@
         android:paddingBottom="@dimen/space_32">
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
-            <ImageButton android:id="@+id/btnBack" android:layout_width="48dp" android:layout_height="48dp" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="Go back" android:padding="12dp" android:src="@drawable/ic_arrow_back" />
+            <ImageButton android:id="@+id/btnBack" android:layout_width="48dp" android:layout_height="48dp" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="Go back" android:padding="12dp" android:src="@drawable/ic_arrow_back" app:tint="@color/ehm_on_surface" />
             <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_8" android:layout_weight="1" android:text="Settings" android:textAppearance="@style/TextAppearance.EHM.PageTitle" />
         </LinearLayout>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:text="DEVICE" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:text="DEVICE" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
-                    <ImageView android:layout_width="36dp" android:layout_height="36dp" android:contentDescription="Current monitoring device" android:src="@drawable/ic_device" />
+                    <ImageView android:layout_width="@dimen/icon_container_size" android:layout_height="@dimen/icon_container_size" android:background="@drawable/bg_icon_container" android:contentDescription="Current monitoring device" android:padding="10dp" android:src="@drawable/ic_device" app:tint="@color/ehm_primary" />
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:layout_weight="1" android:orientation="vertical">
                         <TextView android:id="@+id/tvCurrentDeviceName" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No monitoring device" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold" />
                         <TextView android:id="@+id/tvCurrentDeviceId" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Not configured" android:textAppearance="@style/TextAppearance.EHM.Support" />
@@ -42,7 +42,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="MONITORING" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="MONITORING" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
                 <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switchNotifications" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="Environmental condition notifications" android:textAppearance="@style/TextAppearance.EHM.Body" />
@@ -56,18 +56,19 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="DATA &amp; TESTING" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="DATA &amp; TESTING" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
-                <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switchDemoMode" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:text="Demo mode" android:textAppearance="@style/TextAppearance.EHM.Body" />
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnTestScenario" style="@style/Widget.EHM.Button.Outlined" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="@string/scenario_test_button" android:visibility="gone" />
+                <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switchDemoMode" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_tab_track" android:minHeight="64dp" android:paddingHorizontal="@dimen/space_12" android:text="Demo mode" android:textAppearance="@style/TextAppearance.EHM.Body" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="Use clearly labelled simulated readings for demonstrations. Live monitoring resumes when disabled." android:textAppearance="@style/TextAppearance.EHM.Support" />
+                <com.google.android.material.button.MaterialButton android:id="@+id/btnTestScenario" style="@style/Widget.EHM.Button.Outlined" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:text="@string/scenario_test_button"  app:icon="@drawable/ic_reports" />
                 <TextView android:id="@+id/tvCollectedSamples" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:text="Collected raw samples: 0" android:textAppearance="@style/TextAppearance.EHM.Support" />
                 <com.google.android.material.button.MaterialButton android:id="@+id/btnExportDataset" style="@style/Widget.EHM.Button.Outlined" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="Export raw dataset" />
                 <TextView android:id="@+id/tvExportStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="" android:textAppearance="@style/TextAppearance.EHM.Support" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="ABOUT" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="ABOUT" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
                 <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Environmental Health Monitor" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold" />

@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/ehm_background"
-    android:clipToPadding="false">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/page_padding"
-        android:paddingTop="@dimen/space_20"
-        android:paddingEnd="@dimen/page_padding"
-        android:paddingBottom="104dp">
-
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/ehm_background" android:clipToPadding="false">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="@dimen/page_padding" android:paddingTop="@dimen/space_20" android:paddingEnd="@dimen/page_padding" android:paddingBottom="@dimen/space_24">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Trends &amp; Forecast" android:textAppearance="@style/TextAppearance.EHM.PageTitle" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="Measured history, typical patterns, and model readiness" android:textAppearance="@style/TextAppearance.EHM.Support" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_4" android:text="Measured history, typical patterns, and model readiness" android:textAppearance="@style/TextAppearance.EHM.Support" />
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:background="@drawable/bg_tab_track" android:orientation="horizontal" android:padding="4dp">
             <TextView android:id="@+id/tabDaily" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1" android:background="@drawable/bg_tab_active" android:gravity="center" android:text="Today" android:textColor="@color/ehm_primary" android:textStyle="bold" />
@@ -26,40 +11,44 @@
         </LinearLayout>
 
         <TextView android:id="@+id/tvEnvironmentPeriodTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="Today’s environment" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
-        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/space_20">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DOMINANT ENVIRONMENTAL CONTRIBUTOR" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
-                <TextView android:id="@+id/tvDominantContributor" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="Insufficient history" android:textColor="@color/ehm_primary" android:textSize="21sp" android:textStyle="bold" />
-
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="@dimen/space_16" android:background="@color/ehm_surface_variant" />
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center_vertical" android:orientation="horizontal"><ImageView android:layout_width="24dp" android:layout_height="24dp" android:contentDescription="Thermal concern" android:src="@drawable/ic_thermostat"/><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:layout_weight="1" android:text="Thermal concern" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvThermalDuration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 min" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center_vertical" android:orientation="horizontal"><ImageView android:layout_width="24dp" android:layout_height="24dp" android:contentDescription="Air concern" android:src="@drawable/ic_air"/><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:layout_weight="1" android:text="Air concern" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvAirDuration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 min" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center_vertical" android:orientation="horizontal"><ImageView android:layout_width="24dp" android:layout_height="24dp" android:contentDescription="Estimated noise concern" android:src="@drawable/ic_noise"/><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:layout_weight="1" android:text="Noise concern" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvNoiseDuration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 min" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="@dimen/card_padding_large">
+                <ImageView android:layout_width="@dimen/icon_container_size" android:layout_height="@dimen/icon_container_size" android:background="@drawable/bg_icon_container" android:contentDescription="Dominant contributor" android:padding="10dp" android:src="@drawable/ic_reports" app:tint="@color/ehm_primary" />
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:layout_weight="1" android:orientation="vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DOMINANT ENVIRONMENTAL CONTRIBUTOR" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
+                    <TextView android:id="@+id/tvDominantContributor" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_4" android:text="Insufficient history" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" android:textColor="@color/ehm_primary" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:baselineAligned="false" android:orientation="horizontal">
+            <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginEnd="4dp" android:layout_weight="1"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal" android:orientation="vertical" android:padding="@dimen/space_12"><ImageView android:layout_width="32dp" android:layout_height="32dp" android:background="@drawable/bg_icon_container" android:backgroundTint="@color/ehm_thermal_container" android:contentDescription="Thermal concern" android:padding="7dp" android:src="@drawable/ic_thermostat" app:tint="@color/ehm_thermal_accent"/><TextView android:id="@+id/tvThermalDuration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="0 min" android:textAppearance="@style/TextAppearance.EHM.StatValue"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thermal" android:textAppearance="@style/TextAppearance.EHM.Support"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginHorizontal="4dp" android:layout_weight="1"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal" android:orientation="vertical" android:padding="@dimen/space_12"><ImageView android:layout_width="32dp" android:layout_height="32dp" android:background="@drawable/bg_icon_container" android:backgroundTint="@color/ehm_air_container" android:contentDescription="Air concern" android:padding="7dp" android:src="@drawable/ic_air" app:tint="@color/ehm_air_accent"/><TextView android:id="@+id/tvAirDuration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="0 min" android:textAppearance="@style/TextAppearance.EHM.StatValue"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Air" android:textAppearance="@style/TextAppearance.EHM.Support"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginStart="4dp" android:layout_weight="1"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal" android:orientation="vertical" android:padding="@dimen/space_12"><ImageView android:layout_width="32dp" android:layout_height="32dp" android:background="@drawable/bg_icon_container" android:backgroundTint="@color/ehm_noise_container" android:contentDescription="Estimated noise concern" android:padding="7dp" android:src="@drawable/ic_noise" app:tint="@color/ehm_noise_accent"/><TextView android:id="@+id/tvNoiseDuration" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="0 min" android:textAppearance="@style/TextAppearance.EHM.StatValue"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Noise" android:textAppearance="@style/TextAppearance.EHM.Support"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="Typical patterns" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="@dimen/card_padding">
-                <ImageView android:layout_width="28dp" android:layout_height="28dp" android:contentDescription="Historical pattern" android:src="@drawable/ic_reports" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="@dimen/card_padding">
+                <ImageView android:layout_width="@dimen/icon_container_size" android:layout_height="@dimen/icon_container_size" android:background="@drawable/bg_icon_container" android:contentDescription="Historical pattern" android:padding="10dp" android:src="@drawable/ic_history" app:tint="@color/ehm_primary" />
                 <TextView android:id="@+id/tvHistoricalPattern" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:layout_weight="1" android:text="Not enough historical data yet." android:textAppearance="@style/TextAppearance.EHM.Body" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="Recorded condition timeline" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
-                <com.github.mikephil.charting.charts.LineChart android:id="@+id/conditionChart" android:layout_width="match_parent" android:layout_height="220dp" />
-                <TextView android:id="@+id/tvTrendsEmpty" android:layout_width="match_parent" android:layout_height="160dp" android:gravity="center" android:text="Not enough timestamped history for this period." android:textAppearance="@style/TextAppearance.EHM.Support" />
-            </LinearLayout>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="252dp" android:padding="@dimen/card_padding">
+                <com.github.mikephil.charting.charts.LineChart android:id="@+id/conditionChart" android:layout_width="match_parent" android:layout_height="match_parent" />
+                <TextView android:id="@+id/tvTrendsEmpty" android:layout_width="match_parent" android:layout_height="match_parent" android:drawableTop="@drawable/ic_reports" android:drawablePadding="@dimen/space_12" android:gravity="center" android:text="Not enough timestamped history for this period." android:textAlignment="center" android:textAppearance="@style/TextAppearance.EHM.Support" />
+            </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="Next-hour forecast" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="Forecast readiness" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/space_20">
-                <TextView android:id="@+id/tvForecastTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Forecast unavailable" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
-                <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/forecastProgress" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:indeterminate="true" android:visibility="gone" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding_large">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TEST FORECAST  •  NEXT HOUR" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" android:textColor="@color/ehm_primary" />
+                <TextView android:id="@+id/tvForecastTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="Forecast unavailable" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+                <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/forecastProgress" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:indeterminate="true" android:visibility="gone" />
                 <TextView android:id="@+id/tvForecastState" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="The forecasting model will use historical environmental data to estimate conditions approximately one hour ahead." android:textAppearance="@style/TextAppearance.EHM.Support" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

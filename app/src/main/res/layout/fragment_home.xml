@@ -1,259 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/ehm_background"
-    android:clipToPadding="false">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="@dimen/page_padding"
-        android:paddingTop="@dimen/space_16"
-        android:paddingEnd="@dimen/page_padding"
-        android:paddingBottom="104dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Environmental Health Monitor"
-                android:textAppearance="@style/TextAppearance.EHM.PageTitle" />
-
-            <ImageButton
-                android:id="@+id/btnOpenSettings"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Open Settings"
-                android:padding="12dp"
-                android:src="@drawable/ic_settings" />
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/ehm_background" android:clipToPadding="false">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="@dimen/page_padding" android:paddingTop="@dimen/space_20" android:paddingEnd="@dimen/page_padding" android:paddingBottom="@dimen/space_24">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Environmental Health Monitor" android:textAppearance="@style/TextAppearance.EHM.PageTitle" />
+            <ImageButton android:id="@+id/btnOpenSettings" android:layout_width="48dp" android:layout_height="48dp" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="Open Settings" android:padding="12dp" android:src="@drawable/ic_settings" app:tint="@color/ehm_on_surface" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_16"
-            android:text="MONITORING DEVICE"
-            android:textAppearance="@style/TextAppearance.EHM.Support"
-            android:textStyle="bold" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardActiveDevice"
-            style="@style/Widget.EHM.Card.Tonal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_8"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/card_padding">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:contentDescription="Monitoring device"
-                    android:src="@drawable/ic_device" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_12"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvActiveDeviceName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="No monitoring device"
-                        android:textAppearance="@style/TextAppearance.EHM.CardTitle"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvConnectionStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="No monitoring device configured"
-                        android:textAppearance="@style/TextAppearance.EHM.Support" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="Choose monitoring device"
-                    android:src="@drawable/ic_expand_more" />
+        <com.google.android.material.card.MaterialCardView android:id="@+id/cardOverallCondition" style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/bg_home_hero" android:gravity="center_horizontal" android:orientation="vertical" android:padding="@dimen/card_padding_large">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CURRENT ENVIRONMENT" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
+                <TextView android:id="@+id/tvEnvironmentalCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="@dimen/space_12" android:background="@drawable/bg_condition_chip" android:ellipsize="none" android:gravity="center" android:includeFontPadding="false" android:maxLines="1" android:minWidth="220dp" android:paddingStart="24dp" android:paddingTop="10dp" android:paddingEnd="24dp" android:paddingBottom="10dp" android:singleLine="true" android:text="Unavailable" android:textAlignment="center" android:textAppearance="@style/TextAppearance.EHM.HeroCondition" android:textColor="@color/ehm_on_surface_variant" />
+                <TextView android:id="@+id/tvPrimaryConcernsLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:text="MAIN CONCERN" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" />
+                <TextView android:id="@+id/tvPrimaryConcerns" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_4" android:gravity="center" android:text="Waiting for data" android:textAlignment="center" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+                <TextView android:id="@+id/tvConditionContext" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="Condition guidance will appear when data is available." android:textAlignment="center" android:textAppearance="@style/TextAppearance.EHM.Body" />
+                <com.google.android.material.card.MaterialCardView android:id="@+id/cardActiveDevice" style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:clickable="true" android:focusable="true" android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="@dimen/space_12">
+                        <ImageView android:layout_width="@dimen/icon_container_size" android:layout_height="@dimen/icon_container_size" android:background="@drawable/bg_icon_container" android:contentDescription="Monitoring device" android:padding="10dp" android:src="@drawable/ic_device" app:tint="@color/ehm_primary" />
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:id="@+id/tvActiveDeviceName" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No monitoring device" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold" />
+                            <TextView android:id="@+id/tvConnectionStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="No monitoring device configured" android:textAppearance="@style/TextAppearance.EHM.Support" />
+                        </LinearLayout>
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:contentDescription="Choose monitoring device" android:src="@drawable/ic_expand_more" app:tint="@color/ehm_on_surface_variant" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <TextView android:id="@+id/tvDashboardStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="Waiting for environmental data..." android:textAlignment="center" android:textAppearance="@style/TextAppearance.EHM.Support" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/tvDashboardStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_8"
-            android:text="Waiting for environmental data..."
-            android:textAppearance="@style/TextAppearance.EHM.Support" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_24" android:text="Environmental dimensions" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Measured values and categorical assessment" android:textAppearance="@style/TextAppearance.EHM.Support" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardOverallCondition"
-            style="@style/Widget.EHM.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_24">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/space_20">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CURRENT CONDITION"
-                    android:textAppearance="@style/TextAppearance.EHM.Support"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvEnvironmentalCondition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_8"
-                    android:background="@drawable/bg_condition_chip"
-                    android:text="Unavailable"
-                    android:textColor="@color/ehm_on_surface_variant"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvPrimaryConcernsLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_16"
-                    android:text="Main concern"
-                    android:textAppearance="@style/TextAppearance.EHM.Support" />
-
-                <TextView
-                    android:id="@+id/tvPrimaryConcerns"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Waiting for data"
-                    android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
-
-                <TextView
-                    android:id="@+id/tvConditionContext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_8"
-                    android:text="Condition guidance will appear when data is available."
-                    android:textAppearance="@style/TextAppearance.EHM.Body" />
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
+                    <ImageView android:layout_width="@dimen/icon_container_size" android:layout_height="@dimen/icon_container_size" android:background="@drawable/bg_icon_container" android:backgroundTint="@color/ehm_thermal_container" android:contentDescription="Thermal" android:padding="10dp" android:src="@drawable/ic_thermostat" app:tint="@color/ehm_thermal_accent" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="THERMAL" android:textAppearance="@style/TextAppearance.EHM.Eyebrow" /><TextView android:id="@+id/tvThermalHeadline" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Heat index unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold" /></LinearLayout>
+                    <TextView android:id="@+id/tvThermalCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="12sp" android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:baselineAligned="false" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Temperature" android:textAppearance="@style/TextAppearance.EHM.Support"/><TextView android:id="@+id/tvTemperature" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Humidity" android:textAppearance="@style/TextAppearance.EHM.Support"/><TextView android:id="@+id/tvHumidity" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Heat index" android:textAppearance="@style/TextAppearance.EHM.Support"/><TextView android:id="@+id/tvHeatIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_24"
-            android:text="Environmental dimensions"
-            android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_12"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.EHM.Card.Tonal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="12dp">
-                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:contentDescription="Thermal" android:src="@drawable/ic_thermostat" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="THERMAL" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
-                    <TextView android:id="@+id/tvThermalCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="12sp" android:textStyle="bold" />
-                    <TextView android:id="@+id/tvThermalHeadline" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="Heat index unavailable" android:textAppearance="@style/TextAppearance.EHM.Support" />
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
+                    <ImageView android:layout_width="@dimen/icon_container_size" android:layout_height="@dimen/icon_container_size" android:background="@drawable/bg_icon_container" android:backgroundTint="@color/ehm_air_container" android:contentDescription="Air quality" android:padding="10dp" android:src="@drawable/ic_air" app:tint="@color/ehm_air_accent" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AIR QUALITY" android:textAppearance="@style/TextAppearance.EHM.Eyebrow"/><TextView android:id="@+id/tvAirHeadline" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="TVOC unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+                    <TextView android:id="@+id/tvAirCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="12sp" android:textStyle="bold" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.EHM.Card.Tonal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="4dp"
-                android:layout_weight="1">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="12dp">
-                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:contentDescription="Air quality" android:src="@drawable/ic_air" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="AIR" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
-                    <TextView android:id="@+id/tvAirCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="12sp" android:textStyle="bold" />
-                    <TextView android:id="@+id/tvAirHeadline" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="TVOC unavailable" android:textAppearance="@style/TextAppearance.EHM.Support" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TVOC" android:textAppearance="@style/TextAppearance.EHM.Support"/><TextView android:id="@+id/tvTvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="eCO₂ equivalent" android:textAppearance="@style/TextAppearance.EHM.Support"/><TextView android:id="@+id/tvEco2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.EHM.Card.Tonal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="12dp">
-                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:contentDescription="Estimated noise" android:src="@drawable/ic_noise" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="NOISE" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
-                    <TextView android:id="@+id/tvNoiseCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="12sp" android:textStyle="bold" />
-                    <TextView android:id="@+id/tvNoiseHeadline" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="Estimate unavailable" android:textAppearance="@style/TextAppearance.EHM.Support" />
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
+                    <ImageView android:layout_width="@dimen/icon_container_size" android:layout_height="@dimen/icon_container_size" android:background="@drawable/bg_icon_container" android:backgroundTint="@color/ehm_noise_container" android:contentDescription="Estimated noise" android:padding="10dp" android:src="@drawable/ic_noise" app:tint="@color/ehm_noise_accent" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_12" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ESTIMATED NOISE" android:textAppearance="@style/TextAppearance.EHM.Eyebrow"/><TextView android:id="@+id/tvNoiseHeadline" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Estimate unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+                    <TextView android:id="@+id/tvNoiseCondition" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_condition_chip" android:text="Unavailable" android:textSize="12sp" android:textStyle="bold" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_24"
-            android:text="Measurements"
-            android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
-
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.EHM.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_12">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/card_padding">
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="THERMAL" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Temperature" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvTemperature" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Humidity" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvHumidity" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Heat Index" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvHeatIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="AIR" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TVOC" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvTvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="eCO2 equivalent" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvEco2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="NOISE" android:textAppearance="@style/TextAppearance.EHM.Support" android:textStyle="bold" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal"><TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Estimated Noise Level" android:textAppearance="@style/TextAppearance.EHM.Body"/><TextView android:id="@+id/tvNoiseLevel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.CardTitle" android:textStyle="bold"/></LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Estimated noise level" android:textAppearance="@style/TextAppearance.EHM.Support"/><TextView android:id="@+id/tvNoiseLevel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Unavailable" android:textAppearance="@style/TextAppearance.EHM.MetricValue"/></LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/ehm_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -17,7 +18,7 @@
         android:paddingBottom="@dimen/space_32">
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
-            <ImageButton android:id="@+id/btnBackToSettings" android:layout_width="48dp" android:layout_height="48dp" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@string/setup_cancel_description" android:padding="12dp" android:src="@drawable/ic_arrow_back" />
+            <ImageButton android:id="@+id/btnBackToSettings" android:layout_width="48dp" android:layout_height="48dp" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@string/setup_cancel_description" android:padding="12dp" android:src="@drawable/ic_arrow_back" app:tint="@color/ehm_on_surface" />
             <TextView android:id="@+id/tvSetupTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/space_8" android:layout_weight="1" android:text="@string/setup_add_title" android:textAppearance="@style/TextAppearance.EHM.PageTitle" />
         </LinearLayout>
 
@@ -29,12 +30,12 @@
             <TextView android:id="@+id/tvStepConnect" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1" android:gravity="center" android:text="@string/setup_step_connect" android:textColor="@color/ehm_on_surface_variant" android:textSize="13sp" />
         </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20">
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_horizontal" android:orientation="vertical" android:padding="@dimen/space_20">
-                <ImageView android:layout_width="48dp" android:layout_height="48dp" android:contentDescription="@string/setup_status_description" android:src="@drawable/ic_device" />
+                <ImageView android:layout_width="56dp" android:layout_height="56dp" android:background="@drawable/bg_icon_container" android:contentDescription="@string/setup_status_description" android:padding="14dp" android:src="@drawable/ic_device" app:tint="@color/ehm_primary" />
                 <com.google.android.material.progressindicator.CircularProgressIndicator android:id="@+id/progressProvisioning" android:layout_width="36dp" android:layout_height="36dp" android:layout_marginTop="@dimen/space_12" android:indeterminate="true" android:visibility="gone" app:indicatorColor="@color/ehm_primary" tools:visibility="visible" />
                 <TextView android:id="@+id/tvProvisioningStatusTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_12" android:gravity="center" android:text="@string/setup_find_title" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
-                <TextView android:id="@+id/tvProvisioningStatusDetail" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="@string/setup_find_detail" android:textAppearance="@style/TextAppearance.EHM.Body" />
+                <TextView android:id="@+id/tvProvisioningStatusDetail" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:gravity="center" android:text="@string/setup_find_detail" android:textAlignment="center" android:textAppearance="@style/TextAppearance.EHM.Body" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -63,6 +64,6 @@
 
         <com.google.android.material.button.MaterialButton android:id="@+id/btnPrimaryAction" style="@style/Widget.EHM.Button.Filled" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_20" android:text="@string/setup_find_button" />
         <com.google.android.material.button.MaterialButton android:id="@+id/btnSecondaryAction" style="@style/Widget.EHM.Button.Outlined" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_8" android:text="@string/setup_cancel_button" />
-        <TextView android:id="@+id/tvSecurityNote" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16" android:text="@string/setup_security_note" android:textAppearance="@style/TextAppearance.EHM.Support" />
+        <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card.Tonal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16"><TextView android:id="@+id/tvSecurityNote" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="@dimen/space_12" android:text="@string/setup_security_note" android:textAppearance="@style/TextAppearance.EHM.Support" /></com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

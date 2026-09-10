@@ -7,7 +7,11 @@
     <dimen name="space_20">20dp</dimen>
     <dimen name="space_24">24dp</dimen>
     <dimen name="space_32">32dp</dimen>
+    <dimen name="space_40">40dp</dimen>
     <dimen name="page_padding">20dp</dimen>
     <dimen name="card_radius">20dp</dimen>
     <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_padding_large">20dp</dimen>
+    <dimen name="control_radius">14dp</dimen>
+    <dimen name="icon_container_size">44dp</dimen>
 </resources>

@@ -4,6 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
+import androidx.constraintlayout.widget.ConstraintLayout
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -24,6 +29,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val initialTopPadding = binding.root.paddingTop
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val statusBarInset = insets
+                .getInsets(WindowInsetsCompat.Type.statusBars())
+                .top
+            val navigationBarInset = insets
+                .getInsets(WindowInsetsCompat.Type.navigationBars())
+                .bottom
+            view.updatePadding(top = initialTopPadding + statusBarInset)
+            binding.systemNavigationInset.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                height = navigationBarInset
+            }
+            insets
+        }
+        ViewCompat.requestApplyInsets(binding.root)
 
         // Set up Navigation
         val navHostFragment = supportFragmentManager
