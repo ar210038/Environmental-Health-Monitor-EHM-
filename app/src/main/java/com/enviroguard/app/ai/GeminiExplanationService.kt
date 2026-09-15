@@ -1,6 +1,5 @@
 package com.enviroguard.app.ai
 
-import java.io.IOException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.Flow
@@ -28,26 +27,25 @@ class GeminiExplanationService(
             val request = GeminiWorkerRequestMapper.from(context)
             val text = withTimeout(timeoutMillis) { client.explain(request) }.trim()
             if (text.isEmpty()) {
-                AiExplanationState.Error("The AI service returned no explanation. Please try again.")
+                AiExplanationState.Error(USER_FACING_UNAVAILABLE_MESSAGE)
             } else {
                 AiExplanationState.Success(text, context.isDemo)
             }
         } catch (error: TimeoutCancellationException) {
             GeminiDebugDiagnostics.log(error)
-            AiExplanationState.Error("The AI explanation timed out. Please try again.")
+            AiExplanationState.Error(USER_FACING_UNAVAILABLE_MESSAGE)
         } catch (error: CancellationException) {
             throw error
-        } catch (error: IOException) {
-            GeminiDebugDiagnostics.log(error)
-            AiExplanationState.Error("No network connection is available for the AI explanation.")
         } catch (error: Exception) {
             GeminiDebugDiagnostics.log(error)
-            AiExplanationState.Error("The AI explanation is temporarily unavailable. Monitoring and predefined guidance are still available.")
+            AiExplanationState.Error(USER_FACING_UNAVAILABLE_MESSAGE)
         }
         emit(result)
     }
 
     private companion object {
         const val REQUEST_TIMEOUT_MS = 15_000L
+        const val USER_FACING_UNAVAILABLE_MESSAGE =
+            "AI explanation is temporarily unavailable. Your EHM guidance is still available."
     }
 }

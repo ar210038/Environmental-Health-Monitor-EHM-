@@ -2,7 +2,6 @@ package com.enviroguard.app.ai
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
@@ -66,7 +65,7 @@ internal fun interface GeminiWorkerTransport {
 internal class HttpUrlConnectionGeminiWorkerTransport(
     private val endpoint: String = ENDPOINT,
     private val connectTimeoutMillis: Int = 5_000,
-    private val readTimeoutMillis: Int = 10_000
+    private val readTimeoutMillis: Int = 14_000
 ) : GeminiWorkerTransport {
     override suspend fun post(jsonBody: String): GeminiWorkerHttpResponse = withContext(Dispatchers.IO) {
         val connection = URL(endpoint).openConnection() as HttpURLConnection
@@ -108,7 +107,9 @@ internal class GeminiWorkerClient(
 ) : GeminiExplanationClient {
     override suspend fun explain(request: GeminiWorkerRequest): String {
         val body = GeminiWorkerJson.encode(request)
-        val response = postWithOneRetry(body)
+        // The Worker performs the single primary/fallback sequence. Repeating a Worker 503 here
+        // would duplicate both upstream model attempts and cannot fit the overall Android timeout.
+        val response = transport.post(body)
         if (response.statusCode !in 200..299) {
             throw GeminiWorkerHttpException(
                 statusCode = response.statusCode,
@@ -116,29 +117,5 @@ internal class GeminiWorkerClient(
             )
         }
         return GeminiWorkerJson.decodeExplanation(response.body)
-    }
-
-    private suspend fun postWithOneRetry(body: String): GeminiWorkerHttpResponse {
-        var firstNetworkFailure: IOException? = null
-        repeat(MAX_ATTEMPTS) { attempt ->
-            val response = try {
-                transport.post(body)
-            } catch (error: IOException) {
-                if (attempt == MAX_ATTEMPTS - 1) throw error
-                firstNetworkFailure = error
-                return@repeat
-            }
-            if (!response.isTemporaryFailure() || attempt == MAX_ATTEMPTS - 1) return response
-        }
-        throw firstNetworkFailure ?: IOException("Worker request failed.")
-    }
-
-    private fun GeminiWorkerHttpResponse.isTemporaryFailure() =
-        statusCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT ||
-            statusCode == 429 ||
-            statusCode in 500..599
-
-    private companion object {
-        const val MAX_ATTEMPTS = 2
     }
 }

@@ -108,14 +108,11 @@ class GeminiExplanationUnitTest {
     }
 
     @Test
-    fun emptyExplanationUsesExistingNontechnicalError() = runBlocking {
+    fun emptyExplanationUsesGenericNontechnicalError() = runBlocking {
         val transport = RecordingTransport { _, _ -> GeminiWorkerHttpResponse(200, "{\"explanation\":\"  \"}") }
         val states = service(transport).explain(demoContext()).toList()
 
-        assertEquals(
-            AiExplanationState.Error("The AI service returned no explanation. Please try again."),
-            states[1]
-        )
+        assertEquals(genericError(), states[1])
     }
 
     @Test
@@ -128,24 +125,21 @@ class GeminiExplanationUnitTest {
     }
 
     @Test
-    fun temporaryServerFailureIsRetriedOnlyOnce() = runBlocking {
+    fun exhaustedWorkerFailureIsNotRepeatedByAndroid() = runBlocking {
         val transport = RecordingTransport { _, _ -> GeminiWorkerHttpResponse(503, "temporarily unavailable") }
         val states = service(transport).explain(demoContext()).toList()
 
         assertEquals(genericError(), states[1])
-        assertEquals(2, transport.calls)
+        assertEquals(1, transport.calls)
     }
 
     @Test
-    fun networkFailureIsRetriedOnceAndNeverEscapes() = runBlocking {
+    fun networkFailureUsesGenericMessageAndNeverEscapes() = runBlocking {
         val transport = RecordingTransport { _, _ -> throw IOException("connection unavailable") }
         val states = service(transport).explain(demoContext()).toList()
 
-        assertEquals(
-            AiExplanationState.Error("No network connection is available for the AI explanation."),
-            states[1]
-        )
-        assertEquals(2, transport.calls)
+        assertEquals(genericError(), states[1])
+        assertEquals(1, transport.calls)
     }
 
     @Test
@@ -158,7 +152,7 @@ class GeminiExplanationUnitTest {
             .explain(demoContext())
             .toList()
 
-        assertEquals(AiExplanationState.Error("The AI explanation timed out. Please try again."), states[1])
+        assertEquals(genericError(), states[1])
     }
 
     @Test
@@ -204,7 +198,7 @@ class GeminiExplanationUnitTest {
         GeminiExplanationService(client = GeminiWorkerClient(transport))
 
     private fun genericError() = AiExplanationState.Error(
-        "The AI explanation is temporarily unavailable. Monitoring and predefined guidance are still available."
+        "AI explanation is temporarily unavailable. Your EHM guidance is still available."
     )
 
     private fun demoContext() = SensorReading(25f, 50f, 100f, 600f, 45f).let { reading ->
