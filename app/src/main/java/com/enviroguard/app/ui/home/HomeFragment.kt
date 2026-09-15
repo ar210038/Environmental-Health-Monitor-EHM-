@@ -1,10 +1,15 @@
 package com.enviroguard.app.ui.home
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +18,11 @@ import com.enviroguard.app.EnviroGuardApp
 import com.enviroguard.app.R
 import com.enviroguard.app.data.DeviceManager
 import com.enviroguard.app.databinding.FragmentHomeBinding
+import com.enviroguard.app.external.advisory.ExternalAdvisoryEngine
+import com.enviroguard.app.external.model.ExternalAdvisoryType
+import com.enviroguard.app.external.model.ExternalAqiCategory
+import com.enviroguard.app.external.model.ExternalEnvironmentSnapshot
+import com.enviroguard.app.external.model.ExternalEnvironmentState
 import com.enviroguard.app.model.EnvironmentalAssessment
 import com.enviroguard.app.model.EnvironmentalDimension
 import com.enviroguard.app.model.SensorReading
@@ -21,12 +31,29 @@ import com.enviroguard.app.utils.DeviceStatusEvaluator
 import com.enviroguard.app.utils.TemperatureUtils
 import com.enviroguard.app.utils.ViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.text.DateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: HomeViewModel
+    private lateinit var externalViewModel: ExternalEnvironmentViewModel
     private var lastReading: SensorReading? = null
+    private var lastExternalSnapshot: ExternalEnvironmentSnapshot? = null
+
+    private val externalLocationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (::externalViewModel.isInitialized) {
+                externalViewModel.onLocationPermissionResult(granted || hasAnyLocationPermission())
+            }
+        }
+
+    private val locationSettingsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (::externalViewModel.isInitialized) externalViewModel.retryAfterLocationSettings()
+        }
 
     private val freshnessUpdater = object : Runnable {
         override fun run() {
@@ -44,6 +71,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, state: Bundle?) {
         val app = requireActivity().application as EnviroGuardApp
         viewModel = ViewModelProvider(this, ViewModelFactory(app.repository, app.alertManager))[HomeViewModel::class.java]
+        externalViewModel = ViewModelProvider(
+            this,
+            ExternalEnvironmentViewModelFactory(
+                app.externalEnvironmentRepository,
+                app.externalLocationProvider
+            )
+        )[ExternalEnvironmentViewModel::class.java]
         showUnavailableReadings()
         renderActiveDevice()
 
@@ -71,10 +105,161 @@ class HomeFragment : Fragment() {
             renderAssessment(assessment)
         }
 
+        externalViewModel.state.observe(viewLifecycleOwner, ::renderExternalEnvironment)
+
         binding.btnOpenSettings.setOnClickListener { findNavController().navigate(R.id.settingsFragment) }
         binding.cardActiveDevice.setOnClickListener { showDeviceSelector() }
+        binding.btnExternalRefresh.setOnClickListener { handleExternalRefreshAction() }
+        binding.btnExternalDetails.setOnClickListener { showExternalDetails() }
         viewModel.initialise()
+        externalViewModel.loadIfNeeded()
         binding.root.post(freshnessUpdater)
+    }
+
+    private fun handleExternalRefreshAction() {
+        when (externalViewModel.state.value) {
+            ExternalEnvironmentState.PermissionRequired ->
+                externalLocationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+            ExternalEnvironmentState.LocationDisabled ->
+                locationSettingsLauncher.launch(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            else -> externalViewModel.manualRefresh()
+        }
+    }
+
+    private fun renderExternalEnvironment(state: ExternalEnvironmentState) {
+        binding.progressExternalEnvironment.visibility = View.GONE
+        binding.groupExternalContent.visibility = View.GONE
+        binding.tvExternalStatus.visibility = View.VISIBLE
+        binding.tvExternalNotice.visibility = View.GONE
+        binding.btnExternalDetails.visibility = View.GONE
+        binding.btnExternalRefresh.isEnabled = true
+        binding.btnExternalRefresh.text = "Refresh"
+
+        when (state) {
+            ExternalEnvironmentState.NotLoaded ->
+                binding.tvExternalStatus.text = "Outdoor conditions have not been loaded."
+            ExternalEnvironmentState.Loading -> {
+                binding.progressExternalEnvironment.visibility = View.VISIBLE
+                binding.tvExternalStatus.text = "Loading outdoor conditions..."
+                binding.btnExternalRefresh.isEnabled = false
+            }
+            is ExternalEnvironmentState.Success -> renderExternalSuccess(state)
+            ExternalEnvironmentState.PermissionRequired -> {
+                binding.tvExternalStatus.text = "Location permission is required to show outdoor conditions."
+                binding.btnExternalRefresh.text = "Allow location"
+            }
+            ExternalEnvironmentState.LocationDisabled -> {
+                binding.tvExternalStatus.text = "Turn on location to view outdoor conditions."
+                binding.btnExternalRefresh.text = "Open settings"
+            }
+            ExternalEnvironmentState.LocationUnavailable -> {
+                binding.tvExternalStatus.text = "Current location unavailable."
+                binding.btnExternalRefresh.text = "Try again"
+            }
+            ExternalEnvironmentState.Offline -> {
+                binding.tvExternalStatus.text = "Outdoor data unavailable offline."
+                binding.btnExternalRefresh.text = "Try again"
+            }
+            is ExternalEnvironmentState.Cooldown -> {
+                val minutes = ((state.retryAfterMillis + 59_999L) / 60_000L).coerceAtLeast(1L)
+                binding.tvExternalStatus.text = "Recently refreshed. Try again in $minutes min."
+                binding.btnExternalRefresh.isEnabled = false
+            }
+            is ExternalEnvironmentState.RateLimited -> {
+                binding.tvExternalStatus.text = if (state.dailyLimitReached) {
+                    "Outdoor data refresh limit reached for today."
+                } else {
+                    "Outdoor data is temporarily rate limited."
+                }
+                binding.btnExternalRefresh.isEnabled = false
+            }
+            ExternalEnvironmentState.Error -> {
+                binding.tvExternalStatus.text = "Outdoor data temporarily unavailable."
+                binding.btnExternalRefresh.text = "Try again"
+            }
+        }
+    }
+
+    private fun renderExternalSuccess(state: ExternalEnvironmentState.Success) {
+        val snapshot = state.snapshot
+        lastExternalSnapshot = snapshot
+        binding.tvExternalStatus.visibility = View.GONE
+        binding.groupExternalContent.visibility = View.VISIBLE
+        binding.btnExternalDetails.visibility = View.VISIBLE
+        binding.tvExternalAqiValue.text = snapshot.usAqi?.toString() ?: "Unavailable"
+        binding.tvExternalAqiCategory.text = ExternalAqiCategory.from(snapshot.usAqi)?.displayName
+            ?: "AQI unavailable"
+        binding.tvExternalTemperature.text = formatExternalTemperature(snapshot.currentTemperatureC)
+        binding.tvExternalFeelsLike.text = snapshot.apparentTemperatureC?.let {
+            "Feels like ${formatExternalTemperature(it)}"
+        } ?: "Feels like unavailable"
+
+        val featuredAdvisory = state.advisories.firstOrNull { it.type == ExternalAdvisoryType.FORECAST }
+            ?: state.advisories.firstOrNull()
+        binding.tvExternalAdvisoryTitle.text = featuredAdvisory?.title ?: "Forecast Advisory"
+        binding.tvExternalAdvisoryMessage.text = featuredAdvisory?.message
+            ?: "No forecast advisory at this time."
+        binding.tvExternalUpdated.text = "Updated ${formatExternalTime(snapshot.fetchedAt)}"
+        state.notice?.let { notice ->
+            binding.tvExternalNotice.text = notice
+            binding.tvExternalNotice.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showExternalDetails() {
+        val snapshot = lastExternalSnapshot ?: return
+        val advisories = ExternalAdvisoryEngine.evaluate(snapshot)
+        val details = buildString {
+            appendLine("Outdoor AQI: ${snapshot.usAqi?.toString() ?: "Unavailable"}")
+            appendLine("AQI category: ${ExternalAqiCategory.from(snapshot.usAqi)?.displayName ?: "Unavailable"}")
+            appendLine("PM2.5: ${formatExternalMeasurement(snapshot.pm25MicrogramsPerCubicMetre, "µg/m³")}")
+            appendLine("PM10: ${formatExternalMeasurement(snapshot.pm10MicrogramsPerCubicMetre, "µg/m³")}")
+            appendLine()
+            appendLine("Temperature: ${formatExternalTemperature(snapshot.currentTemperatureC)}")
+            appendLine("Feels like: ${formatExternalTemperature(snapshot.apparentTemperatureC)}")
+            appendLine("Weather: ${weatherDescription(snapshot.weatherCode)}")
+            appendLine("Wind: ${formatExternalMeasurement(snapshot.windSpeedKmh, "km/h")}")
+            appendLine()
+            if (advisories.isEmpty()) {
+                appendLine("No forecast advisory at this time.")
+            } else {
+                advisories.forEach { advisory -> appendLine("${advisory.title}: ${advisory.message}") }
+            }
+            appendLine()
+            appendLine("Updated ${formatExternalTime(snapshot.fetchedAt)}")
+            appendLine("Weather and air-quality data: Open-Meteo")
+            append("Outdoor AQI is regional/modelled external data and may not represent the exact conditions at this building.")
+        }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Outdoor & Forecast")
+            .setMessage(details)
+            .setPositiveButton("Close", null)
+            .show()
+    }
+
+    private fun hasAnyLocationPermission(): Boolean =
+        ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+    private fun formatExternalTemperature(value: Double?): String =
+        value?.takeIf(Double::isFinite)?.let { String.format(Locale.getDefault(), "%.1f°C", it) } ?: "Unavailable"
+
+    private fun formatExternalMeasurement(value: Double?, unit: String): String =
+        value?.takeIf(Double::isFinite)?.let { String.format(Locale.getDefault(), "%.1f %s", it, unit) } ?: "Unavailable"
+
+    private fun formatExternalTime(timestamp: Long): String =
+        DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(timestamp))
+
+    private fun weatherDescription(code: Int?): String = when (code) {
+        0 -> "Clear sky"
+        1, 2, 3 -> "Partly cloudy or overcast"
+        45, 48 -> "Fog"
+        51, 53, 55, 56, 57 -> "Drizzle"
+        61, 63, 65, 66, 67, 80, 81, 82 -> "Rain"
+        71, 73, 75, 77, 85, 86 -> "Snow"
+        95, 96, 99 -> "Thunderstorm"
+        null -> "Unavailable"
+        else -> "Weather code $code"
     }
 
     private fun renderActiveDevice() {

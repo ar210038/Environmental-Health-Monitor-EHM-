@@ -9,6 +9,11 @@ import com.enviroguard.app.alerts.EnvironmentalAlertManager
 import com.enviroguard.app.ai.GeminiExplanationService
 import com.enviroguard.app.forecast.EnvironmentalForecastModel
 import com.enviroguard.app.forecast.EnvironmentalForecastService
+import com.enviroguard.app.external.location.AndroidExternalLocationProvider
+import com.enviroguard.app.external.network.OpenMeteoClient
+import com.enviroguard.app.external.repository.DailyRequestQuota
+import com.enviroguard.app.external.repository.ExternalEnvironmentRepository
+import com.enviroguard.app.external.repository.SharedPreferencesQuotaControlStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,6 +27,14 @@ class EnviroGuardApp : Application() {
     private val forecastModelDelegate = lazy { EnvironmentalForecastModel(this) }
     val forecastModel by forecastModelDelegate
     val forecastService by lazy { EnvironmentalForecastService(forecastModel) }
+    internal val externalEnvironmentRepository by lazy {
+        val preferences = getSharedPreferences("external_request_quota", MODE_PRIVATE)
+        ExternalEnvironmentRepository(
+            service = OpenMeteoClient(),
+            quota = DailyRequestQuota(SharedPreferencesQuotaControlStore(preferences))
+        )
+    }
+    internal val externalLocationProvider by lazy { AndroidExternalLocationProvider(this) }
 
     override fun onCreate() {
         super.onCreate()
