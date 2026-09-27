@@ -1,0 +1,376 @@
+{
+  "model_version": "EHM_RF_H60_3032cleanrecords",
+  "dataset_sha256": "1a12683203371df08c5d254a2990f6b7e7d0e2b059b5e147d4d5530dad43c3f0",
+  "anchor_timestamp": 1790501057485,
+  "feature_order": [
+    "temperature",
+    "humidity",
+    "tvoc",
+    "eco2",
+    "noise_level",
+    "heat_index",
+    "temperature_lag5m",
+    "humidity_lag5m",
+    "tvoc_lag5m",
+    "eco2_lag5m",
+    "noise_level_lag5m",
+    "heat_index_lag5m",
+    "temperature_lag15m",
+    "humidity_lag15m",
+    "tvoc_lag15m",
+    "eco2_lag15m",
+    "noise_level_lag15m",
+    "heat_index_lag15m",
+    "temperature_lag30m",
+    "humidity_lag30m",
+    "tvoc_lag30m",
+    "eco2_lag30m",
+    "noise_level_lag30m",
+    "heat_index_lag30m",
+    "temperature_change5m",
+    "humidity_change5m",
+    "tvoc_change5m",
+    "eco2_change5m",
+    "noise_level_change5m",
+    "heat_index_change5m",
+    "hour_sin",
+    "hour_cos"
+  ],
+  "features_float32": [
+    30.700000762939453,
+    79.4000015258789,
+    1157.0,
+    420.0,
+    64.69999694824219,
+    39.6849479675293,
+    30.700000762939453,
+    79.5999984741211,
+    686.0,
+    445.0,
+    65.30000305175781,
+    39.75098419189453,
+    30.700000762939453,
+    79.4000015258789,
+    113.0,
+    400.0,
+    63.400001525878906,
+    39.6849479675293,
+    30.700000762939453,
+    79.30000305175781,
+    294.0,
+    400.0,
+    64.80000305175781,
+    39.65200424194336,
+    0.0,
+    -0.20000000298023224,
+    471.0,
+    -25.0,
+    -0.6000000238418579,
+    -0.06603556126356125,
+    -0.7771459817886353,
+    -0.6293203830718994
+  ],
+  "history": [
+    {
+      "timestamp": 1790499191017,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.8,
+      "humidity": 79.1,
+      "tvoc": 322.0,
+      "eco2": 400.0,
+      "noise_level": 64.8
+    },
+    {
+      "timestamp": 1790499253078,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.3,
+      "tvoc": 294.0,
+      "eco2": 400.0,
+      "noise_level": 64.8
+    },
+    {
+      "timestamp": 1790499315435,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.3,
+      "tvoc": 322.0,
+      "eco2": 400.0,
+      "noise_level": 64.9
+    },
+    {
+      "timestamp": 1790499377908,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.4,
+      "tvoc": 325.0,
+      "eco2": 400.0,
+      "noise_level": 66.4
+    },
+    {
+      "timestamp": 1790499440167,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.4,
+      "tvoc": 370.0,
+      "eco2": 400.0,
+      "noise_level": 65.0
+    },
+    {
+      "timestamp": 1790499502324,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 380.0,
+      "eco2": 400.0,
+      "noise_level": 64.9
+    },
+    {
+      "timestamp": 1790499564157,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 378.0,
+      "eco2": 400.0,
+      "noise_level": 64.7
+    },
+    {
+      "timestamp": 1790499626517,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 395.0,
+      "eco2": 400.0,
+      "noise_level": 64.2
+    },
+    {
+      "timestamp": 1790499689999,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 367.0,
+      "eco2": 400.0,
+      "noise_level": 65.2
+    },
+    {
+      "timestamp": 1790499752366,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.4,
+      "tvoc": 382.0,
+      "eco2": 400.0,
+      "noise_level": 64.7
+    },
+    {
+      "timestamp": 1790499814724,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.4,
+      "tvoc": 393.0,
+      "eco2": 400.0,
+      "noise_level": 64.4
+    },
+    {
+      "timestamp": 1790499876808,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.4,
+      "tvoc": 410.0,
+      "eco2": 400.0,
+      "noise_level": 66.6
+    },
+    {
+      "timestamp": 1790499938339,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 404.0,
+      "eco2": 400.0,
+      "noise_level": 64.6
+    },
+    {
+      "timestamp": 1790500000202,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 331.0,
+      "eco2": 400.0,
+      "noise_level": 64.2
+    },
+    {
+      "timestamp": 1790500061851,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.6,
+      "tvoc": 226.0,
+      "eco2": 400.0,
+      "noise_level": 63.9
+    },
+    {
+      "timestamp": 1790500124199,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 197.0,
+      "eco2": 400.0,
+      "noise_level": 64.7
+    },
+    {
+      "timestamp": 1790500185845,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.4,
+      "tvoc": 113.0,
+      "eco2": 400.0,
+      "noise_level": 63.4
+    },
+    {
+      "timestamp": 1790500247688,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 115.0,
+      "eco2": 400.0,
+      "noise_level": 64.7
+    },
+    {
+      "timestamp": 1790500309962,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 176.0,
+      "eco2": 400.0,
+      "noise_level": 63.9
+    },
+    {
+      "timestamp": 1790500372319,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 224.0,
+      "eco2": 400.0,
+      "noise_level": 64.1
+    },
+    {
+      "timestamp": 1790500434666,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.6,
+      "tvoc": 382.0,
+      "eco2": 400.0,
+      "noise_level": 65.3
+    },
+    {
+      "timestamp": 1790500496625,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 499.0,
+      "eco2": 400.0,
+      "noise_level": 65.0
+    },
+    {
+      "timestamp": 1790500558464,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.6,
+      "tvoc": 540.0,
+      "eco2": 418.0,
+      "noise_level": 65.0
+    },
+    {
+      "timestamp": 1790500620317,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 624.0,
+      "eco2": 442.0,
+      "noise_level": 64.7
+    },
+    {
+      "timestamp": 1790500682467,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.5,
+      "tvoc": 693.0,
+      "eco2": 455.0,
+      "noise_level": 64.9
+    },
+    {
+      "timestamp": 1790500744952,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.6,
+      "tvoc": 686.0,
+      "eco2": 445.0,
+      "noise_level": 65.3
+    },
+    {
+      "timestamp": 1790500807635,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.6,
+      "tvoc": 666.0,
+      "eco2": 446.0,
+      "noise_level": 63.5
+    },
+    {
+      "timestamp": 1790500870192,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.6,
+      "humidity": 79.5,
+      "tvoc": 637.0,
+      "eco2": 436.0,
+      "noise_level": 64.0
+    },
+    {
+      "timestamp": 1790500932766,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.4,
+      "tvoc": 691.0,
+      "eco2": 428.0,
+      "noise_level": 63.9
+    },
+    {
+      "timestamp": 1790500995230,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.3,
+      "tvoc": 986.0,
+      "eco2": 427.0,
+      "noise_level": 64.9
+    },
+    {
+      "timestamp": 1790501057485,
+      "deviceId": "EHM_24D304",
+      "temperature": 30.7,
+      "humidity": 79.4,
+      "tvoc": 1157.0,
+      "eco2": 420.0,
+      "noise_level": 64.7
+    }
+  ],
+  "predictions": {
+    "heat_index": {
+      "sklearn": 38.920860862323856,
+      "onnx": 38.920860290527344,
+      "absolute_difference": 5.717965123608337e-07
+    },
+    "tvoc": {
+      "sklearn": 415.92272599030633,
+      "onnx": 415.92266845703125,
+      "absolute_difference": 5.753327508273287e-05
+    },
+    "eco2": {
+      "sklearn": 491.5206770249404,
+      "onnx": 491.5205993652344,
+      "absolute_difference": 7.76597060507811e-05
+    },
+    "noise_level": {
+      "sklearn": 64.67008275016678,
+      "onnx": 64.67008209228516,
+      "absolute_difference": 6.57881628285395e-07
+    }
+  }
+}

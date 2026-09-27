@@ -12,6 +12,7 @@ import com.enviroguard.app.model.EnvironmentalDimension
 import com.enviroguard.app.utils.DateRangeUtils
 import com.enviroguard.app.utils.EnvironmentalConditionEngine
 import com.enviroguard.app.forecast.EnvironmentalForecastService
+import com.enviroguard.app.forecast.ForecastModelConfig
 import com.enviroguard.app.forecast.ForecastPipelineState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -33,7 +34,7 @@ class ReportsViewModel(
     private val _dominantContributor = MutableLiveData("Insufficient history"); val dominantContributor: LiveData<String> = _dominantContributor
     private val _historicalPattern = MutableLiveData("Not enough historical data yet."); val historicalPattern: LiveData<String> = _historicalPattern
     private val _forecastState = MutableLiveData<ForecastPipelineState>(
-        ForecastPipelineState.Unavailable("No current measurement is available for the test forecast.")
+        ForecastPipelineState.Unavailable("At least 30 minutes of continuous measured history is required.")
     ); val forecastState: LiveData<ForecastPipelineState> = _forecastState
     private val _isEmpty = MutableLiveData(true); val isEmpty: LiveData<Boolean> = _isEmpty
     private var job: Job? = null
@@ -61,23 +62,26 @@ class ReportsViewModel(
         }
         forecastJob = viewModelScope.launch {
             if (DeviceManager.isDemoMode) {
-                service.forecast(repository.getDemoReading()).collect { _forecastState.value = it }
+                _forecastState.value = ForecastPipelineState.Unavailable(
+                    "Experimental forecasts use measured device history and are unavailable in Demo Mode."
+                )
                 return@launch
             }
             val deviceId = DeviceManager.activeDeviceId
             if (deviceId.isNullOrBlank()) {
                 _forecastState.value = ForecastPipelineState.Unavailable(
-                    "A current or timestamped measured reading is needed to run the test forecast."
+                    "Connect a monitoring device to build the required forecast history."
                 )
                 return@launch
             }
-            repository.observeLatestReadingForDevice(deviceId).collectLatest { reading ->
-                if (reading == null) {
+            val since = System.currentTimeMillis() - ForecastModelConfig.HISTORY_LOOKBACK_MS
+            repository.getReadingsBetween(since, Long.MAX_VALUE, deviceId).collectLatest { history ->
+                if (history.isEmpty()) {
                     _forecastState.value = ForecastPipelineState.Unavailable(
-                        "Waiting for a timestamped measured reading to run the test forecast."
+                        "Waiting for at least 30 minutes of continuous measured history."
                     )
                 } else {
-                    service.forecast(reading).collect { _forecastState.value = it }
+                    service.forecast(history).collect { _forecastState.value = it }
                 }
             }
         }

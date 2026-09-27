@@ -22,84 +22,79 @@ class EnvironmentalForecastModel(context: Context) : ForecastInference, Closeabl
     private val appContext = context.applicationContext
     private val environment by lazy { OrtEnvironment.getEnvironment() }
     private val lock = Any()
-    @Volatile private var session: OrtSession? = null
+    @Volatile private var sessions: Map<ForecastTarget, OrtSession> = emptyMap()
 
     override suspend fun initialize() = withContext(Dispatchers.IO) {
-        getOrCreateSession()
+        getOrCreateSessions()
         Unit
     }
 
     override suspend fun predict(features: FloatArray): ForecastResult = withContext(Dispatchers.Default) {
         ForecastFeatureSchema.validate(features)
-        val activeSession = getOrCreateSession()
-        val tensor = OnnxTensor.createTensor(
-            environment,
-            FloatBuffer.wrap(features),
-            longArrayOf(1, ForecastFeatureSchema.featureCount.toLong())
-        )
-        tensor.use {
-            activeSession.run(mapOf(ForecastModelConfig.INPUT_NAME to it)).use { outputs ->
-                val output = outputs.get(ForecastModelConfig.OUTPUT_NAME).orElseThrow {
-                    ForecastModelException("The configured forecast output is missing.")
-                } as? OnnxTensor ?: throw ForecastModelException("The forecast output is not a tensor.")
-                val buffer = output.floatBuffer
-                val values = FloatArray(buffer.remaining())
-                buffer.get(values)
-                ForecastOutputDecoder.decode(values)
+        val activeSessions = getOrCreateSessions()
+        val values = ForecastTarget.entries.map { target ->
+            val tensor = OnnxTensor.createTensor(
+                environment,
+                FloatBuffer.wrap(features),
+                longArrayOf(1, ForecastFeatureSchema.featureCount.toLong())
+            )
+            tensor.use {
+                activeSessions.getValue(target)
+                    .run(mapOf(ForecastModelConfig.INPUT_NAME to it)).use { outputs ->
+                        val output = outputs.get(ForecastModelConfig.OUTPUT_NAME).orElseThrow {
+                            ForecastModelException("The ${target.name} forecast output is missing.")
+                        } as? OnnxTensor
+                            ?: throw ForecastModelException("The ${target.name} forecast output is not a tensor.")
+                        val buffer = output.floatBuffer
+                        if (buffer.remaining() != 1) {
+                            throw ForecastModelException("The ${target.name} model returned an unexpected output size.")
+                        }
+                        buffer.get()
+                    }
+            }
+        }.toFloatArray()
+        ForecastOutputDecoder.decode(values)
+    }
+
+    private fun getOrCreateSessions(): Map<ForecastTarget, OrtSession> {
+        sessions.takeIf { it.size == ForecastTarget.entries.size }?.let { return it }
+        return synchronized(lock) {
+            sessions.takeIf { it.size == ForecastTarget.entries.size } ?: createValidatedSessions().also {
+                sessions = it
             }
         }
     }
 
-    private fun getOrCreateSession(): OrtSession {
-        session?.let { return it }
-        return synchronized(lock) {
-            session ?: createValidatedSession().also { session = it }
-        }
-    }
-
-    private fun createValidatedSession(): OrtSession {
-        val modelBytes = try {
-            appContext.assets.open(ForecastModelConfig.ASSET_PATH).use { it.readBytes() }
-        } catch (error: Exception) {
-            throw ForecastModelException("The test forecast model asset is unavailable.", error)
-        }
-        val created = try {
-            OrtSession.SessionOptions().use { options -> environment.createSession(modelBytes, options) }
-        } catch (error: Exception) {
-            throw ForecastModelException("ONNX Runtime could not load the test forecast model.", error)
-        }
+    private fun createValidatedSessions(): Map<ForecastTarget, OrtSession> {
+        val created = linkedMapOf<ForecastTarget, OrtSession>()
         try {
-            validateMetadata(created)
+            ForecastTarget.entries.forEach { target ->
+                val modelBytes = appContext.assets.open(target.assetPath).use { it.readBytes() }
+                val session = OrtSession.SessionOptions().use { options ->
+                    environment.createSession(modelBytes, options)
+                }
+                validateContract(session, target)
+                created[target] = session
+            }
         } catch (error: Exception) {
-            created.close()
+            created.values.forEach(OrtSession::close)
             if (error is ForecastModelException) throw error
-            throw ForecastModelException("The test forecast model contract is invalid.", error)
+            throw ForecastModelException("The experimental forecast models could not be loaded.", error)
         }
         return created
     }
 
-    private fun validateMetadata(created: OrtSession) {
+    private fun validateContract(created: OrtSession, target: ForecastTarget) {
         requireTensorShape(
             created.inputInfo[ForecastModelConfig.INPUT_NAME]?.info,
             expectedLastDimension = ForecastFeatureSchema.featureCount,
-            label = "input"
+            label = "${target.name} input"
         )
         requireTensorShape(
             created.outputInfo[ForecastModelConfig.OUTPUT_NAME]?.info,
-            expectedLastDimension = ForecastOutputDecoder.OUTPUT_COUNT,
-            label = "output"
+            expectedLastDimension = 1,
+            label = "${target.name} output"
         )
-        val metadata = created.metadata.customMetadata
-        requireMetadata(metadata, "ehm_model_source", ForecastModelConfig.SOURCE.name)
-        requireMetadata(metadata, "ehm_schema_version", ForecastModelConfig.SCHEMA_VERSION)
-        requireMetadata(metadata, "ehm_horizon_minutes", ForecastModelConfig.HORIZON_MINUTES.toString())
-        requireMetadata(metadata, "ehm_feature_order", ForecastFeatureSchema.names.joinToString(","))
-    }
-
-    private fun requireMetadata(metadata: Map<String, String>, key: String, expected: String) {
-        if (metadata[key] != expected) {
-            throw ForecastModelException("The test forecast model metadata does not match $key.")
-        }
     }
 
     private fun requireTensorShape(info: Any?, expectedLastDimension: Int, label: String) {
@@ -117,8 +112,8 @@ class EnvironmentalForecastModel(context: Context) : ForecastInference, Closeabl
 
     override fun close() {
         synchronized(lock) {
-            session?.close()
-            session = null
+            sessions.values.forEach(OrtSession::close)
+            sessions = emptyMap()
         }
     }
 }

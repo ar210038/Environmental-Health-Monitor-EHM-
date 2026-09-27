@@ -1,0 +1,80 @@
+{
+  "model_version": "EHM_RF_H60_3032cleanrecords",
+  "input_dtype": "float32",
+  "one_hour_horizon_minutes": 60,
+  "sensor_columns": [
+    "temperature",
+    "humidity",
+    "tvoc",
+    "eco2",
+    "noise_level"
+  ],
+  "targets": [
+    "heat_index",
+    "tvoc",
+    "eco2",
+    "noise_level"
+  ],
+  "feature_order": [
+    "temperature",
+    "humidity",
+    "tvoc",
+    "eco2",
+    "noise_level",
+    "heat_index",
+    "temperature_lag5m",
+    "humidity_lag5m",
+    "tvoc_lag5m",
+    "eco2_lag5m",
+    "noise_level_lag5m",
+    "heat_index_lag5m",
+    "temperature_lag15m",
+    "humidity_lag15m",
+    "tvoc_lag15m",
+    "eco2_lag15m",
+    "noise_level_lag15m",
+    "heat_index_lag15m",
+    "temperature_lag30m",
+    "humidity_lag30m",
+    "tvoc_lag30m",
+    "eco2_lag30m",
+    "noise_level_lag30m",
+    "heat_index_lag30m",
+    "temperature_change5m",
+    "humidity_change5m",
+    "tvoc_change5m",
+    "eco2_change5m",
+    "noise_level_change5m",
+    "heat_index_change5m",
+    "hour_sin",
+    "hour_cos"
+  ],
+  "lag_minutes": [
+    5,
+    15,
+    30
+  ],
+  "lag_matching_tolerance_minutes": 2,
+  "max_allowed_gap_between_sensor_samples_minutes": 3,
+  "target_matching_tolerance_minutes": 2,
+  "time_zone_for_hour_features": "Asia/Dhaka",
+  "heat_index_formula": "NOAA/NWS: simple expression, switch to Rothfusz when average >= 80F; low/high RH adjustments. Must match Android implementation.",
+  "model_files": {
+    "heat_index": "rf_heat_index.joblib",
+    "tvoc": "rf_tvoc.joblib",
+    "eco2": "rf_eco2.joblib",
+    "noise_level": "rf_noise_level.joblib"
+  },
+  "onnx_files": {
+    "heat_index": "rf_heat_index.onnx",
+    "tvoc": "rf_tvoc.onnx",
+    "eco2": "rf_eco2.onnx",
+    "noise_level": "rf_noise_level.onnx"
+  },
+  "validation_selected_max_depth": {
+    "heat_index": 8,
+    "tvoc": 8,
+    "eco2": 8,
+    "noise_level": 8
+  }
+}

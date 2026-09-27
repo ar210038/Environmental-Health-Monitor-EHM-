@@ -44,7 +44,10 @@
 
         <com.google.android.material.card.MaterialCardView style="@style/Widget.EHM.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/space_16">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/card_padding">
-                <TextView android:id="@+id/tvHistoryChartTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Temperature — Hour" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal">
+                    <TextView android:id="@+id/tvHistoryChartTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Temperature — Hour" android:textAppearance="@style/TextAppearance.EHM.SectionTitle" />
+                    <ImageButton android:id="@+id/btnDownloadHistoryChart" android:layout_width="48dp" android:layout_height="48dp" android:alpha="0.38" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@string/download_chart" android:enabled="false" android:padding="12dp" android:src="@drawable/ic_download" app:tint="@color/ehm_primary" />
+                </LinearLayout>
                 <com.github.mikephil.charting.charts.LineChart android:id="@+id/historyChart" android:layout_width="match_parent" android:layout_height="280dp" android:layout_marginTop="@dimen/space_12" />
                 <TextView android:id="@+id/tvHistoryEmpty" android:layout_width="match_parent" android:layout_height="220dp" android:drawableTop="@drawable/ic_history" android:drawablePadding="@dimen/space_12" android:gravity="center" android:text="No measurements are available for this period." android:textAlignment="center" android:textAppearance="@style/TextAppearance.EHM.Support" android:visibility="gone" />
             </LinearLayout>

@@ -16,13 +16,13 @@ object ForecastPresentationFactory {
             showProgress = false
         )
         ForecastPipelineState.Loading -> ForecastPresentation(
-            title = "Loading forecast pipeline test",
-            detail = "Loading the local test-only ONNX model…",
+            title = "Loading experimental forecast",
+            detail = "Loading the four local ONNX models…",
             showProgress = true
         )
         ForecastPipelineState.Ready -> ForecastPresentation(
-            title = "Forecast pipeline test",
-            detail = "Local test model loaded. Running inference…",
+            title = "Experimental forecast",
+            detail = "Models loaded. Running local inference…",
             showProgress = true
         )
         is ForecastPipelineState.Error -> ForecastPresentation(
@@ -35,29 +35,17 @@ object ForecastPresentationFactory {
 
     private fun success(state: ForecastPipelineState.Success): ForecastPresentation {
         val result = state.result
-        val sourceNotice = when (result.source) {
-            ForecastSource.SMOKE_TEST ->
-                "Android ONNX pipeline verification only — not based on the final trained environmental model."
-            ForecastSource.FINAL_MODEL ->
-                "Approximately ${result.horizonMinutes}-minute model forecast. Keep current measurements separate."
-        }
-        val assessment = state.assessment
-        val concerns = assessment.primaryConcerns
-            .takeIf { it.isNotEmpty() }
-            ?.joinToString(" and ") { it.displayName }
-            ?: "None at the highest unfavorable level"
         return ForecastPresentation(
-            title = if (result.source == ForecastSource.SMOKE_TEST) "Test forecast" else "Next-hour forecast",
+            title = "Experimental forecast",
             detail = buildString {
-                appendLine(sourceNotice)
+                appendLine("Approximate ${result.horizonMinutes}-minute Random Forest forecast from continuous measured history.")
                 appendLine()
                 appendLine("Heat Index: ${decimal(result.heatIndexCelsius)} °C")
                 appendLine("TVOC: ${decimal(result.tvocPpb)} ppb")
                 appendLine("eCO2 equivalent: ${decimal(result.eco2EquivalentPpm)} ppm")
-                appendLine("Estimated Noise Level: ${decimal(result.estimatedNoiseLevelDb)} dB")
+                appendLine("Estimated Noise Level: ${decimal(result.estimatedNoiseLevel)} estimated units")
                 appendLine()
-                appendLine("Rule-based forecast condition: ${assessment.overallCondition?.displayName ?: "Unavailable"}")
-                append("Forecast primary concerns: $concerns")
+                append("Experimental only: this pilot model performed worse than persistence. Current measurements, guidance, and alerts remain authoritative.")
             },
             showProgress = false
         )

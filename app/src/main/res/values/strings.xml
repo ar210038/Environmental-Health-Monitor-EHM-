@@ -46,4 +46,8 @@
     <string name="scenario_tvoc_hint">TVOC (ppb)</string>
     <string name="scenario_eco2_hint">eCO2 equivalent (ppm)</string>
     <string name="scenario_noise_hint">Estimated Noise Level (dB)</string>
+    <string name="download_chart">Download chart as PNG</string>
+    <string name="chart_export_success">Chart PNG saved.</string>
+    <string name="chart_export_failed">Chart PNG could not be saved.</string>
+    <string name="chart_export_empty">No chart data is available to download.</string>
 </resources>

@@ -1,7 +1,0 @@
-# Tooling used only to regenerate and verify ehm_forecast_smoke_test.onnx.
-# Versions are intentionally bounded; use an isolated Python environment.
-numpy==2.5.2
-scikit-learn==1.9.0
-skl2onnx==1.20.0
-onnx==1.22.0
-onnxruntime==1.29.0

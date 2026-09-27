@@ -1,0 +1,26 @@
+{
+  "heat_index": {
+    "max_absolute_difference": 6.184832749056568e-06,
+    "tolerance": 0.22341864274441595,
+    "verified_rows": 64,
+    "onnx_file": "output\\rf_heat_index.onnx"
+  },
+  "tvoc": {
+    "max_absolute_difference": 9.217489309776283e-05,
+    "tolerance": 5.40073410345259,
+    "verified_rows": 64,
+    "onnx_file": "output\\rf_tvoc.onnx"
+  },
+  "eco2": {
+    "max_absolute_difference": 6.201425264862337e-05,
+    "tolerance": 4.35544690643643,
+    "verified_rows": 64,
+    "onnx_file": "output\\rf_eco2.onnx"
+  },
+  "noise_level": {
+    "max_absolute_difference": 7.560789740068685e-06,
+    "tolerance": 0.3481060831998884,
+    "verified_rows": 64,
+    "onnx_file": "output\\rf_noise_level.onnx"
+  }
+}

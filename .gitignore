@@ -1,15 +1,51 @@
+# Android Studio, Gradle and local SDK state
 *.iml
-.gradle
+/.idea/
+/.gradle/
+/.android/
+/.kotlin/
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/captures/
+/.externalNativeBuild/
+/.cxx/
+**/build/
+*.apk
+*.aab
+
+# Firebase, signing and local credentials
+**/google-services.json
+*.jks
+*.keystore
+*.p12
+*.pem
+service-account*.json
+.env
+.env.*
+!.env.example
+*.secrets
+*.secret
+
+# Cloudflare local state and JavaScript dependencies
+/.wrangler/
+/.dev.vars
+**/node_modules/
+
+# Python/ML local environments, raw data and training artifacts
+**/.venv/
+**/venv/
+**/__pycache__/
+*.py[cod]
+/ml/data/
+/ml/output*/
+*.joblib
+/EHM_ML_V1_Consistent/
+
+# Local diagnostics and operating-system files
+*.log
+hs_err_pid*
+crash*.txt
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+Thumbs.db
+
+# Local module-only ignore file; root rules cover app/build.
+/app/.gitignore

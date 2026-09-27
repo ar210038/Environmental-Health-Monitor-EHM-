@@ -11,7 +11,7 @@ object ForecastAssessmentAdapter {
         val tvoc = EnvironmentalConditionEngine.classifyTvoc(result.tvocPpb)
         val eco2 = EnvironmentalConditionEngine.classifyEco2(result.eco2EquivalentPpm)
         val air = listOfNotNull(tvoc, eco2).maxByOrNull(EnvironmentalCondition::severity)
-        val noise = EnvironmentalConditionEngine.classifyNoise(result.estimatedNoiseLevelDb)
+        val noise = EnvironmentalConditionEngine.classifyNoise(result.estimatedNoiseLevel)
         val overall = listOfNotNull(thermal, air, noise).maxByOrNull(EnvironmentalCondition::severity)
         val concerns = listOf(
             EnvironmentalDimension.THERMAL to thermal,

@@ -1,14 +1,18 @@
 package com.enviroguard.app.ui.reports
 
-import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.activity.result.contract.ActivityResultContracts
 import com.enviroguard.app.EnviroGuardApp
 import com.enviroguard.app.R
+import com.enviroguard.app.chart.ChartExportMetadata
+import com.enviroguard.app.chart.HistoricalChartPngExporter
 import com.enviroguard.app.databinding.FragmentReportsBinding
 import com.enviroguard.app.utils.ViewModelFactory
 import com.github.mikephil.charting.components.XAxis
@@ -17,11 +21,19 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import androidx.core.content.ContextCompat
 import com.enviroguard.app.forecast.ForecastPresentationFactory
+import android.widget.Toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ReportsFragment : Fragment() {
     private var _binding: FragmentReportsBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ReportsViewModel
+    private var pendingChartPng: ByteArray? = null
+    private val createChartDocument = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("image/png")
+    ) { uri -> savePendingChart(uri) }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View { _binding = FragmentReportsBinding.inflate(inflater, container, false); return binding.root }
     override fun onViewCreated(view: View, state: Bundle?) {
         val app = requireActivity().application as EnviroGuardApp
@@ -29,6 +41,7 @@ class ReportsFragment : Fragment() {
             this,
             ViewModelFactory(repository = app.repository, forecastService = app.forecastService)
         )[ReportsViewModel::class.java]
+        binding.btnDownloadConditionChart.setOnClickListener { prepareChartExport() }
         binding.conditionChart.apply {
             description.isEnabled = false
             xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -58,7 +71,11 @@ class ReportsFragment : Fragment() {
             binding.tvForecastState.text = presentation.detail
             binding.forecastProgress.visibility = if (presentation.showProgress) View.VISIBLE else View.GONE
         }
-        viewModel.isEmpty.observe(viewLifecycleOwner) { empty -> binding.conditionChart.visibility = if (empty) View.GONE else View.VISIBLE; binding.tvTrendsEmpty.visibility = if (empty) View.VISIBLE else View.GONE }
+        viewModel.isEmpty.observe(viewLifecycleOwner) { empty ->
+            binding.conditionChart.visibility = if (empty) View.GONE else View.VISIBLE
+            binding.tvTrendsEmpty.visibility = if (empty) View.VISIBLE else View.GONE
+            setDownloadEnabled(!empty)
+        }
         viewModel.chartPoints.observe(viewLifecycleOwner) { points ->
             if (points.isEmpty()) { binding.conditionChart.clear(); return@observe }
             val base = points.first().first
@@ -67,6 +84,47 @@ class ReportsFragment : Fragment() {
             binding.conditionChart.data = LineData(set); binding.conditionChart.invalidate()
         }
     }
+    private fun prepareChartExport() {
+        if (!HistoricalChartPngExporter.hasData(binding.conditionChart)) {
+            Toast.makeText(requireContext(), R.string.chart_export_empty, Toast.LENGTH_SHORT).show()
+            return
+        }
+        val period = listOf("Day", "Week", "Month").getOrElse(viewModel.selectedPeriod.value ?: 0) { "Period" }
+        val metadata = ChartExportMetadata("Environmental condition timeline", period)
+        HistoricalChartPngExporter.render(
+            chart = binding.conditionChart,
+            metadata = metadata,
+            backgroundColor = ContextCompat.getColor(requireContext(), R.color.ehm_surface),
+            titleColor = ContextCompat.getColor(requireContext(), R.color.ehm_on_surface),
+            subtitleColor = ContextCompat.getColor(requireContext(), R.color.ehm_on_surface_variant)
+        ).onSuccess { png ->
+            pendingChartPng = png
+            createChartDocument.launch(metadata.suggestedFileName)
+        }.onFailure {
+            Toast.makeText(requireContext(), R.string.chart_export_failed, Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun savePendingChart(uri: Uri?) {
+        val png = pendingChartPng.also { pendingChartPng = null } ?: return
+        if (uri == null) return
+        val appContext = context?.applicationContext ?: return
+        lifecycleScope.launch {
+            val saved = withContext(Dispatchers.IO) {
+                HistoricalChartPngExporter.writePng(png) {
+                    appContext.contentResolver.openOutputStream(uri, "w")
+                }.isSuccess
+            }
+            Toast.makeText(
+                appContext,
+                if (saved) R.string.chart_export_success else R.string.chart_export_failed,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+    private fun setDownloadEnabled(enabled: Boolean) {
+        binding.btnDownloadConditionChart.isEnabled = enabled
+        binding.btnDownloadConditionChart.alpha = if (enabled) 1f else 0.38f
+    }
     override fun onResume() { super.onResume(); if (::viewModel.isInitialized) viewModel.selectPeriod(viewModel.selectedPeriod.value ?: 0) }
-    override fun onDestroyView() { super.onDestroyView(); _binding = null }
+    override fun onDestroyView() { pendingChartPng = null; super.onDestroyView(); _binding = null }
 }

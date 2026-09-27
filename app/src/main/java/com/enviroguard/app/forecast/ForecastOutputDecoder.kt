@@ -16,7 +16,7 @@ object ForecastOutputDecoder {
             heatIndexCelsius = values[0],
             tvocPpb = values[1],
             eco2EquivalentPpm = values[2],
-            estimatedNoiseLevelDb = values[3],
+            estimatedNoiseLevel = values[3],
             horizonMinutes = horizonMinutes,
             source = source
         )
